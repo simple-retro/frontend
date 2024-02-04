@@ -1,0 +1,118 @@
+{
+  "uuid": "b176de99-8242-4e8e-85df-8494eb3855bf",
+  "lastMigration": 32,
+  "name": "Simple api",
+  "endpointPrefix": "",
+  "latency": 500,
+  "port": 3000,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "de4b66da-06ed-4fad-b044-705339fb40c1",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "question",
+      "responses": [
+        {
+          "uuid": "39c8ef9d-0227-4903-ae7f-34d77267785f",
+          "body": "{\n  \"id\": \"question-123\"\n}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "question",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "cookie",
+              "modifier": "retrospective_id",
+              "value": "retro-123",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "13bb66ee-5827-48e9-945b-f3477716bebf",
+          "body": "{\n  \"error\": \"This retro doesnt exists\"\n}",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "de4b66da-06ed-4fad-b044-705339fb40c1"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}

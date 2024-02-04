@@ -1,9 +1,11 @@
 <script setup lang="ts">
-  import HelloWorld from './components/HelloWorld.vue';
+  import NotifyToast from './components/NotifyToast.vue';
+  import CreateQuestion from './components/question/CreateQuestion.vue';
 </script>
 
 <template>
   <div>
-    <HelloWorld msg="Lessgo" />
+    <NotifyToast />
+    <CreateQuestion />
   </div>
 </template>
