@@ -5,18 +5,18 @@ const createRetrospective = async (
   name: string,
   description?: string,
 ): Promise<MayBeError<Retrospective>> => {
-  /*  const res = */ await apiRequest
+  const res = await apiRequest
     .post(Endpoints.Retrospective, {
       name,
       description,
     })
     .catch(() => null);
 
-  return { id: '12398', name, description, questions: [] };
-  /* 
+  // return { id: '12398', name, description, questions: [] };
+
   if (!res) return { error: true };
 
-  return res.data; */
+  return res.data;
 };
 
 const getRetrospective = async (retroId: string): Promise<MayBeError<Retrospective>> => {

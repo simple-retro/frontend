@@ -8,7 +8,7 @@ export const router = createRouter({
     {
       path: '/retrospective',
       name: 'retrospective.new',
-      component: () => import('../views/ConfigureRetrospective.vue'),
+      component: () => import('../views/CreateRetrospectivePage.vue'),
     },
     {
       path: '/retrospective/:id',
@@ -32,7 +32,7 @@ router.beforeEach(async (to) => {
   const retroStore = useRetrospectiveStore();
   const retroId = to.params.id;
 
-  const ignoreRouteNames = ['retrospective.new', '404'];
+  const ignoreRouteNames = ['retrospective.new', '404', 'home'];
 
   if (
     retroStore.retrospective === undefined &&

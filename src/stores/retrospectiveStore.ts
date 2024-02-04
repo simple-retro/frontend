@@ -17,6 +17,8 @@ export type Retrospective = {
   questions: Question[];
 };
 
+export type ID<T> = T & { id: string };
+
 export const useRetrospectiveStore = defineStore('retrospective', () => {
   const retrospective = ref<Retrospective>();
 
@@ -40,14 +42,14 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
     if (questionIndex !== -1) retrospective.value.questions.splice(questionIndex, 1);
   };
 
-  const updateQuestion = (questionId: string, update: Partial<Question>) => {
+  const updateQuestion = (toUpdate: ID<Partial<Question>>) => {
     if (typeof retrospective.value === 'undefined') return;
 
-    const question = retrospective.value.questions.find((q) => q.id === questionId);
+    const question = retrospective.value.questions.find((q) => q.id === toUpdate.id);
 
     if (!question) return;
 
-    Object.entries(update).forEach(([key, value]) => {
+    Object.entries(toUpdate).forEach(([key, value]) => {
       question[key as 'id'] = value as string;
     });
   };
