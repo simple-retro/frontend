@@ -1,15 +1,16 @@
 import axios from 'axios';
 
-export const API_URL = 'http://localhost:3000';
+export const API_URL = 'localhost:8080';
 
 export enum Endpoints {
   Question = '/question',
   Retrospective = '/retrospective',
   Answer = '/answer',
+  SocketHello = '/hello',
 }
 
 export const apiRequest = axios.create({
-  baseURL: API_URL,
+  baseURL: `http://${API_URL}`,
   headers: {
     'User-Agent': 'Simple-Retro-Frontend/1.0 (+https://github.com/simple-retro/website)',
   },
