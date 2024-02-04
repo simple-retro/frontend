@@ -1,53 +1,41 @@
 <script setup lang="ts">
   import { ref } from 'vue';
+  import retroApi from '../../services/retrospectiveApi';
+  import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
+  import { useRetrospectiveStore } from '../../stores/retrospectiveStore';
+  import { useRouter } from 'vue-router';
+  import BaseButton from '../BaseButton.vue';
 
-  const retrospectiveName = ref('');
-  const description = ref('');
+  const notifyStore = useNotifyStore();
+  const retroStore = useRetrospectiveStore();
+  const router = useRouter();
+
+  const retroName = ref('');
+  const retroDescription = ref('');
   const disabledInteraction = ref(false);
 
   const createRetrospective = async () => {
     disabledInteraction.value = true;
 
-    try {
-      const apiUrl = 'http://localhost:5173';
-      const response = await fetch(`${apiUrl}/retrospective`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: retrospectiveName.value,
-          description: description.value,
-        }),
-      });
+    const retro = await retroApi.createRetrospective(retroName.value, retroDescription.value);
 
-      if (!response.ok) {
-        throw new Error('Failed to create retrospective');
-      }
+    disabledInteraction.value = false;
 
-      const responseData = await response.json();
-      console.log('Retrospective created with ID:', responseData.id);
-    } catch (error) {
-      console.error('Error creating retrospective:', error);
-    } finally {
-      setTimeout(() => {
-        disabledInteraction.value = false;
-      }, 1000);
-      console.log(retrospectiveName.value, description.value);
-    }
+    if (retro.error) return notifyStore.notify('An error ocrured', NotificationType.Error);
+
+    retroStore.setRetrospective(retro);
+    router.push({ name: 'retrospective.view', params: { id: retro.id } });
   };
 </script>
 
 <template>
-  <div class="max-w-md mx-auto relative">
-    <div class="relative z-0 w-full mb-5 group">
+  <div class="relative w-full">
+    <div class="mb-5">
       <input
         id="default-input"
-        v-model="retrospectiveName"
+        v-model="retroName"
         type="text"
-        name="retrospective_name"
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        placeholder=" "
         required
       />
       <label
@@ -61,21 +49,20 @@
       <label for="large-input" class="block mb-2 text-sm text-gray-500 dark:text-gray-400"
         >Restrospective description</label
       >
-      <input
+      <textarea
         id="large-input"
-        v-model="description"
+        v-model="retroDescription"
         type="text"
         :disabled="disabledInteraction"
         class="block w-full p-4 text-gray-900 border-2 border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
       />
     </div>
-    <button
-      type="button"
-      :disabled="disabledInteraction"
-      class="right-0 absolute text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:hover:bg-gradient-to-r disabled:opacity-75 rounded-lg text-sm px-5 py-2.5 text-center mb-2"
+    <BaseButton
+      :disabled="disabledInteraction || retroName.length < 4"
+      class="right-0 absolute w-full"
       @click="createRetrospective"
     >
       Create retrospective
-    </button>
+    </BaseButton>
   </div>
 </template>
