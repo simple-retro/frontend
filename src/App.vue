@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import NotifyToast from './components/NotifyToast.vue';
-  import CreateQuestion from './components/question/CreateQuestion.vue';
+  import answer from './components/answer/CreateAnswer.vue';
 </script>
 
 <template>
   <div>
     <NotifyToast />
-    <CreateQuestion />
+    <answer />
   </div>
 </template>
