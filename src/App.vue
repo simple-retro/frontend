@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import NotifyToast from './components/NotifyToast.vue';
-  import CreateQuestion from './components/question/CreateQuestion.vue';
+  import { RouterView } from 'vue-router';
 </script>
 
 <template>
-  <div>
+  <div class="mb-10">
+    <RouterView />
     <NotifyToast />
-    <CreateQuestion />
   </div>
 </template>

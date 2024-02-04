@@ -20,6 +20,10 @@ export type Retrospective = {
 export const useRetrospectiveStore = defineStore('retrospective', () => {
   const retrospective = ref<Retrospective>();
 
+  const setRetrospective = (retro: Retrospective) => {
+    retrospective.value = retro;
+  };
+
   const createQuestion = (question: Question) => {
     if (typeof retrospective.value === 'undefined') return;
 
@@ -48,5 +52,5 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
     });
   };
 
-  return { retrospective, createQuestion, updateQuestion };
+  return { retrospective, createQuestion, updateQuestion, setRetrospective };
 });

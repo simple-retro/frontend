@@ -2,8 +2,11 @@
   import { ref } from 'vue';
   import questionApi from '../../services/questionApi';
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
+  import { useRetrospectiveStore } from '../../stores/retrospectiveStore';
+  import BaseButton from '../BaseButton.vue';
 
   const notifyStore = useNotifyStore();
+  const retroStore = useRetrospectiveStore();
   const question = ref('');
   const disableIntearction = ref(false);
 
@@ -19,7 +22,7 @@
     if (res.error)
       return notifyStore.notify('An error occured to create the question', NotificationType.Error);
 
-    notifyStore.notify('Coisa criada!', NotificationType.Success);
+    retroStore.createQuestion(res);
   };
 </script>
 
@@ -35,13 +38,12 @@
       placeholder="When you were a child..."
     />
 
-    <button
-      type="button"
+    <BaseButton
       :disabled="disableIntearction || question.length < 5"
-      class="right-0 absolute text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:hover:bg-gradient-to-r disabled:opacity-75 rounded-lg text-sm px-5 py-2.5 text-center mb-2"
+      class="right-0 absolute"
       @click="createQuestion"
     >
       Create question
-    </button>
+    </BaseButton>
   </div>
 </template>
