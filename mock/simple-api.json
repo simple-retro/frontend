@@ -99,6 +99,10 @@
     {
       "key": "Access-Control-Allow-Origin",
       "value": "*"
+    },
+    {
+      "key": "Set-Cookie",
+      "value": "retrospective_id=retro-123"
     }
   ],
   "proxyReqHeaders": [

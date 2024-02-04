@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import NotifyToast from './components/NotifyToast.vue';
-  import answer from './components/answer/CreateAnswer.vue';
+  import { RouterView } from 'vue-router';
 </script>
 
 <template>
-  <div>
+  <div class="mb-10">
+    <RouterView />
     <NotifyToast />
-    <answer />
   </div>
 </template>
