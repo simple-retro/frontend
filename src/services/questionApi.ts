@@ -4,7 +4,7 @@ import { ID, Question } from '../stores/retrospectiveStore';
 const createQuestion = async (question: string): Promise<MayBeError<Question>> => {
   const res = await apiRequest
     .post(Endpoints.Question, {
-      question,
+      text: question,
     })
     .catch(() => null);
 

@@ -6,16 +6,6 @@ export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/retrospective',
-      name: 'retrospective.new',
-      component: () => import('../views/CreateRetrospectivePage.vue'),
-    },
-    {
-      path: '/retrospective/:id',
-      name: 'retrospective.view',
-      component: () => import('../views/RetrospectivePage.vue'),
-    },
-    {
       path: '/',
       name: 'home',
       component: () => import('../views/AboutPage.vue'),
@@ -24,6 +14,16 @@ export const router = createRouter({
       path: '/lost',
       name: '404',
       component: () => import('../views/UnknownRetro.vue'),
+    },
+    {
+      path: '/retrospective',
+      name: 'retrospective.new',
+      component: () => import('../views/CreateRetrospectivePage.vue'),
+    },
+    {
+      path: '/retrospective/:id',
+      name: 'retrospective.view',
+      component: () => import('../views/RetrospectivePage.vue'),
     },
   ],
 });
