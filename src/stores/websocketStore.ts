@@ -4,17 +4,15 @@ import { API_URL, Endpoints } from '../services';
 
 import { NotificationType, useNotifyStore } from './notifyStore';
 import retrospectiveApi from '../services/retrospectiveApi';
-import { ID, Question, useRetrospectiveStore } from './retrospectiveStore';
+import { useRetrospectiveStore } from './retrospectiveStore';
 
 type SocketActions = 'create' | 'update' | 'delete';
 type SocketEntity = 'question' | 'retrospective' | 'answer';
 
-type PossibleValues = ID<Partial<Question>>;
-
 type SocketMessage = {
   action: SocketActions;
   type: SocketEntity;
-  value: PossibleValues;
+  value: unknown;
 };
 
 export const useWebsocketStore = defineStore('websocket', () => {
@@ -41,17 +39,15 @@ export const useWebsocketStore = defineStore('websocket', () => {
   const onMessage = (message: MessageEvent<string>) => {
     const data = JSON.parse(message.data) as SocketMessage;
 
-    const actionName = `${data.action}${capitalize(data.type)}`;
+    const functionName = `${data.action}${capitalize(data.type)}` as const;
 
-    const toExecute = retroStore[actionName as 'updateQuestion'];
+    const toExecute = retroStore[data.type as 'question'][functionName as 'createQuestion'];
 
     if (toExecute === undefined)
       return notifyStore.notify(
         `Unsuported event sent in websocket. Action: "${data.action}", Type: "${data.type}"`,
         NotificationType.Error,
       );
-
-    toExecute(data.value);
   };
 
   const onConnect = async () => {
@@ -59,7 +55,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
     retries = 0;
 
     const retro = await retrospectiveApi.getRetrospective(retrospectiveId);
-    if (!retro.error) retroStore.setRetrospective(retro);
+    if (!retro.error) retroStore.retrospective.updateRetrospective(retro);
 
     notifyStore.notify(`Websocket connected`, NotificationType.Success);
   };
@@ -85,7 +81,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
     )
       return;
 
-    websocket.value = new WebSocket(`ws://${API_URL}${Endpoints.SocketHello}/${retroId}`);
+    websocket.value = new WebSocket(`ws://${API_URL}/api${Endpoints.SocketHello}/${retroId}`);
     retrospectiveId = retroId;
 
     websocket.value.onerror = onError;

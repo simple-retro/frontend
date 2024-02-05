@@ -1,5 +1,5 @@
 import { Endpoints, MayBeError, apiRequest } from './index';
-import { Retrospective } from '../stores/retrospectiveStore';
+import { ID, Retrospective } from '../stores/retrospectiveStore';
 
 const createRetrospective = async (
   name: string,
@@ -11,8 +11,6 @@ const createRetrospective = async (
       description,
     })
     .catch(() => null);
-
-  // return { id: '12398', name, description, questions: [] };
 
   if (!res) return { error: true };
 
@@ -27,4 +25,22 @@ const getRetrospective = async (retroId: string): Promise<MayBeError<Retrospecti
   return result.data;
 };
 
-export default { createRetrospective, getRetrospective };
+const deleteRestrospective = async (retroId: string): Promise<MayBeError<void>> => {
+  const result = await apiRequest.delete(`${Endpoints.Retrospective}/${retroId}`).catch(() => null);
+
+  if (!result) return { error: true };
+};
+
+const updateRetrospective = async (
+  toUpdate: ID<Partial<Pick<Retrospective, 'name' | 'description'>>>,
+): Promise<MayBeError<Retrospective>> => {
+  const result = await apiRequest
+    .patch(`${Endpoints.Retrospective}/${toUpdate.id}`, toUpdate)
+    .catch(() => null);
+
+  if (!result) return { error: true };
+
+  return result.data;
+};
+
+export default { createRetrospective, getRetrospective, deleteRestrospective, updateRetrospective };
