@@ -35,21 +35,21 @@ router.beforeEach(async (to) => {
   const ignoreRouteNames = ['retrospective.new', '404', 'home'];
 
   if (
-    retroStore.retrospective === undefined &&
+    retroStore.currentRetro === undefined &&
     retroId === undefined &&
     !ignoreRouteNames.includes(`${to.name?.toString()}`)
   )
     return { name: 'retrospective.new' };
 
-  if (retroStore.retrospective !== undefined && ignoreRouteNames.includes(`${to.name?.toString()}`))
-    return { name: 'retrospective.view', params: { id: retroStore.retrospective.id } };
+  if (retroStore.currentRetro !== undefined && ignoreRouteNames.includes(`${to.name?.toString()}`))
+    return { name: 'retrospective.view', params: { id: retroStore.currentRetro.id } };
 
-  if (retroStore.retrospective === undefined && typeof retroId === 'string') {
+  if (retroStore.currentRetro === undefined && typeof retroId === 'string') {
     const retrospective = await retrospectiveApi.getRetrospective(retroId);
 
     if (retrospective.error) return { name: '404', query: { id: retroId } };
 
-    retroStore.setRetrospective(retrospective);
+    retroStore.retrospective.updateRetrospective(retrospective);
     return { name: 'retrospective.view', params: { id: retrospective.id } };
   }
 });

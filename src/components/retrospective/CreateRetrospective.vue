@@ -23,7 +23,7 @@
 
     if (retro.error) return notifyStore.notify('An error ocrured', NotificationType.Error);
 
-    retroStore.setRetrospective(retro);
+    retroStore.retrospective.updateRetrospective(retro);
     router.push({ name: 'retrospective.view', params: { id: retro.id } });
   };
 </script>

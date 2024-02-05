@@ -22,7 +22,7 @@
     if (res.error)
       return notifyStore.notify('An error occured to create the question', NotificationType.Error);
 
-    retroStore.createQuestion(res);
+    retroStore.question.createQuestion(res);
   };
 </script>
 

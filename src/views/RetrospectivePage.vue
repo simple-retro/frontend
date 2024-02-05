@@ -7,12 +7,11 @@
 
   const websocket = useWebsocketStore();
 
-  console.log(retroStore.retrospective?.id);
-  websocket.connect(retroStore.retrospective!.id);
+  websocket.connect(retroStore.currentRetro!.id);
 
-  const { retrospective } = storeToRefs(retroStore);
+  const { currentRetro } = storeToRefs(retroStore);
 </script>
 
 <template>
-  <h1 class="text-4xl font-bold">Retrospectiva {{ retrospective?.name }}</h1>
+  <h1 class="text-4xl font-bold">Retrospectiva {{ currentRetro?.name }}</h1>
 </template>
