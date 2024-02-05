@@ -49,6 +49,8 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
   const createQuestion = (question: Question) => {
     if (currentRetro.value === undefined) return;
 
+    if (currentRetro.value.questions.some((q) => q.id === question.id)) return;
+
     currentRetro.value.questions.push(question);
   };
 
@@ -70,6 +72,8 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
     const question = currentRetro.value.questions.find((a) => a.id === answer.question_id);
 
     if (!question) return;
+
+    if (question.answers.some((a) => a.id === answer.id)) return;
 
     question.answers.push(answer);
   };

@@ -4,7 +4,7 @@ import { API_URL, Endpoints } from '../services';
 
 import { NotificationType, useNotifyStore } from './notifyStore';
 import retrospectiveApi from '../services/retrospectiveApi';
-import { useRetrospectiveStore } from './retrospectiveStore';
+import { Question, useRetrospectiveStore } from './retrospectiveStore';
 
 type SocketActions = 'create' | 'update' | 'delete';
 type SocketEntity = 'question' | 'retrospective' | 'answer';
@@ -37,6 +37,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
   };
 
   const onMessage = (message: MessageEvent<string>) => {
+    console.log('received message', message.data);
     const data = JSON.parse(message.data) as SocketMessage;
 
     const functionName = `${data.action}${capitalize(data.type)}` as const;
@@ -48,6 +49,8 @@ export const useWebsocketStore = defineStore('websocket', () => {
         `Unsuported event sent in websocket. Action: "${data.action}", Type: "${data.type}"`,
         NotificationType.Error,
       );
+
+    toExecute(data.value as Question);
   };
 
   const onConnect = async () => {

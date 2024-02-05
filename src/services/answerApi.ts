@@ -1,10 +1,11 @@
 import { Endpoints, MayBeError, apiRequest } from './index';
 import { Answer, ID } from '../stores/retrospectiveStore';
 
-const createAnswer = async (answer: string): Promise<MayBeError<Answer>> => {
+const createAnswer = async (answer: string, questionId: string): Promise<MayBeError<Answer>> => {
   const res = await apiRequest
     .post(Endpoints.Answer, {
-      answer,
+      text: answer,
+      question_id: questionId,
     })
     .catch(() => null);
 
@@ -14,7 +15,7 @@ const createAnswer = async (answer: string): Promise<MayBeError<Answer>> => {
 };
 
 const deleteAnswer = async (answerId: string): Promise<MayBeError<void>> => {
-  const res = await apiRequest.delete(`${Endpoints.Question}/${answerId}`).catch(() => null);
+  const res = await apiRequest.delete(`${Endpoints.Answer}/${answerId}`).catch(() => null);
 
   if (!res) return { error: true };
 };
@@ -22,7 +23,7 @@ const deleteAnswer = async (answerId: string): Promise<MayBeError<void>> => {
 const editAnswer = async (
   answer: ID<Partial<Pick<Answer, 'text'>>>,
 ): Promise<MayBeError<Answer>> => {
-  const res = await apiRequest.patch(`${Endpoints.Question}/${answer.id}`).catch(() => null);
+  const res = await apiRequest.patch(`${Endpoints.Answer}/${answer.id}`).catch(() => null);
 
   if (!res) return { error: true };
 
