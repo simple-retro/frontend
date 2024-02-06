@@ -16,6 +16,11 @@ export const router = createRouter({
       component: () => import('../views/UnknownRetro.vue'),
     },
     {
+      path: '/oopsie',
+      name: '500',
+      component: () => import('../views/ExceptionScreen.vue'),
+    },
+    {
       path: '/retrospective',
       name: 'retrospective.new',
       component: () => import('../views/CreateRetrospectivePage.vue'),

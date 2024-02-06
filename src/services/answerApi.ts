@@ -23,7 +23,7 @@ const deleteAnswer = async (answerId: string): Promise<MayBeError<void>> => {
 const editAnswer = async (
   answer: ID<Partial<Pick<Answer, 'text'>>>,
 ): Promise<MayBeError<Answer>> => {
-  const res = await apiRequest.patch(`${Endpoints.Answer}/${answer.id}`).catch(() => null);
+  const res = await apiRequest.patch(`${Endpoints.Answer}/${answer.id}`, answer).catch(() => null);
 
   if (!res) return { error: true };
 

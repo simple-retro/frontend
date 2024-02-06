@@ -25,6 +25,10 @@ export type ID<T, Question = false> = Question extends true
   ? T & { id: string; question_id: string }
   : T & { id: string };
 
+const duplicata = (event: unknown) => {
+  console.log('Duplicate event received from websocket: ', event);
+};
+
 export const useRetrospectiveStore = defineStore('retrospective', () => {
   const currentRetro = ref<Retrospective>();
   const router = useRouter();
@@ -49,7 +53,7 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
   const createQuestion = (question: Question) => {
     if (currentRetro.value === undefined) return;
 
-    if (currentRetro.value.questions.some((q) => q.id === question.id)) return;
+    if (currentRetro.value.questions.some((q) => q.id === question.id)) return duplicata(question);
 
     currentRetro.value.questions.push(question);
   };
@@ -73,7 +77,7 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
 
     if (!question) return;
 
-    if (question.answers.some((a) => a.id === answer.id)) return;
+    if (question.answers.some((a) => a.id === answer.id)) return duplicata(answer);
 
     question.answers.push(answer);
   };

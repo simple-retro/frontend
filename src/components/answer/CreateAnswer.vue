@@ -2,8 +2,10 @@
   import { ref } from 'vue';
   import answerApi from '../../services/answerApi';
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
+  import { useRetrospectiveStore } from '../../stores/retrospectiveStore';
 
   const notifyStore = useNotifyStore();
+  const retroStore = useRetrospectiveStore();
   const answer = ref('');
   const disableIntearction = ref(false);
 
@@ -27,7 +29,7 @@
     if (res.error)
       return notifyStore.notify('An error occured to create the question', NotificationType.Error);
 
-    notifyStore.notify('Coisa criada!', NotificationType.Success);
+    retroStore.answer.createAnswer({ ...res, question_id: questionId });
   };
 </script>
 
