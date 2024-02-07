@@ -26,6 +26,8 @@ export const useWebsocketStore = defineStore('websocket', () => {
   let retries = 0;
 
   const reconnectLogic = () => {
+    if (retries >= 3) return destroy();
+
     reconnectTimeout = setTimeout(
       () => {
         retries += 1;
@@ -37,7 +39,6 @@ export const useWebsocketStore = defineStore('websocket', () => {
   };
 
   const onMessage = (message: MessageEvent<string>) => {
-    console.log('received message', message.data);
     const data = JSON.parse(message.data) as SocketMessage;
 
     const functionName = `${data.action}${capitalize(data.type)}` as const;
@@ -63,17 +64,12 @@ export const useWebsocketStore = defineStore('websocket', () => {
     notifyStore.notify(`Websocket connected`, NotificationType.Success);
   };
 
-  const onError = () => {
-    if (
-      websocket.value !== undefined &&
-      websocket.value.CLOSED === (websocket.value.readyState as 3)
-    )
-      return;
+  const onError = (e: unknown) => {
+    console.log('Websocket error', e);
   };
 
   const onClose = () => {
     notifyStore.notify(`The websocket connection has been closed`, NotificationType.Warning);
-
     reconnectLogic();
   };
 
@@ -93,5 +89,12 @@ export const useWebsocketStore = defineStore('websocket', () => {
     websocket.value.onclose = onClose;
   };
 
-  return { websocket, connect };
+  const destroy = () => {
+    clearTimeout(reconnectTimeout);
+
+    websocket.value?.close(3015, 'Its a panic from my side. Do not take it bad');
+    websocket.value = undefined;
+  };
+
+  return { websocket, connect, destroy };
 });

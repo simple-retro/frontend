@@ -5,6 +5,8 @@
   import BaseButton from '../BaseButton.vue';
   import CreateAnswer from '../answer/CreateAnswer.vue';
   import ModalifyComponent from '../ModalifyComponent.vue';
+  import DeleteQuestion from './DeleteQuestion.vue';
+  import UpdateQuestion from './UpdateQuestion.vue';
 
   const { question } = defineProps<{
     question: Question;
@@ -28,6 +30,8 @@
     <div class="flex gap-10">
       <div>{{ question.text }}</div>
       <BaseButton @click="toggleAnswerModal">Answer</BaseButton>
+      <DeleteQuestion :question-id="question.id" />
+      <UpdateQuestion :question="question" />
     </div>
 
     <DisplayAnswer v-for="answer in question.answers" :key="answer.id" :answer="answer" />
