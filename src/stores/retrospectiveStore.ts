@@ -6,6 +6,7 @@ export type Answer = {
   id: string;
   text: string;
   position: number;
+  question_id: string;
 };
 
 export type Question = {

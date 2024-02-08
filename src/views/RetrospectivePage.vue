@@ -3,7 +3,7 @@
   import { storeToRefs } from 'pinia';
   import { useRetrospectiveStore } from '../stores/retrospectiveStore';
   import { useWebsocketStore } from '../stores/websocketStore';
-  import DisplayQuestion from '../components/question/DisplayQuestion.vue';
+  import QuestionLayout from '../components/question/QuestionLayout.vue';
   import BaseButton from '../components/BaseButton.vue';
   import CreateQuestion from '../components/question/CreateQuestion.vue';
   import ModalifyComponent from '../components/ModalifyComponent.vue';
@@ -37,7 +37,7 @@
   </ModalifyComponent>
 
   <div class="grid grid-cols-3 gap-10">
-    <DisplayQuestion
+    <QuestionLayout
       v-for="question in currentRetro!.questions"
       :key="question.id"
       :question="question"

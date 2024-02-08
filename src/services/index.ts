@@ -11,9 +11,6 @@ export enum Endpoints {
 
 export const apiRequest = axios.create({
   baseURL: `http://${API_URL}/api`,
-  headers: {
-    'User-Agent': 'Simple-Retro-Frontend/1.0 (+https://github.com/simple-retro/website)',
-  },
   withCredentials: true,
 });
 
