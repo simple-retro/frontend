@@ -12,18 +12,16 @@
     question: Question;
   }>();
 
-  const modalToShow = ref('none');
+  const isOpen = ref(false);
 
   const toggleAnswerModal = () => {
-    if (!['none', 'answer'].includes(modalToShow.value)) return;
-
-    modalToShow.value = modalToShow.value === 'none' ? 'answer' : 'none';
+    isOpen.value = !isOpen.value;
   };
 </script>
 
 <template>
   <div>
-    <ModalifyComponent v-if="modalToShow === 'answer'" @close="toggleAnswerModal">
+    <ModalifyComponent v-if="isOpen" @close="toggleAnswerModal">
       <CreateAnswer :question-id="question.id" @fetched="$event.success && toggleAnswerModal()" />
     </ModalifyComponent>
 
