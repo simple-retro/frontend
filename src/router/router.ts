@@ -27,8 +27,19 @@ export const router = createRouter({
     },
     {
       path: '/retrospective/:id',
-      name: 'retrospective.view',
       component: () => import('../views/RetrospectivePage.vue'),
+      children: [
+        {
+          path: '',
+          name: 'retrospective.view',
+          component: () => import('../components/retrospective/RetrospectiveLayout.vue'),
+        },
+        {
+          path: 'edit',
+          name: 'retrospective.edit',
+          component: () => import('../components/retrospective/ManageRetrospective.vue'),
+        },
+      ],
     },
   ],
 });
@@ -37,7 +48,7 @@ router.beforeEach(async (to) => {
   const retroStore = useRetrospectiveStore();
   const retroId = to.params.id;
 
-  const ignoreRouteNames = ['retrospective.new', '404', 'home'];
+  const ignoreRouteNames = ['retrospective.new', 'retrospective.edit', '404', 'home'];
 
   if (
     retroStore.currentRetro === undefined &&
@@ -46,15 +57,16 @@ router.beforeEach(async (to) => {
   )
     return { name: 'retrospective.new' };
 
-  if (retroStore.currentRetro !== undefined && ignoreRouteNames.includes(`${to.name?.toString()}`))
-    return { name: 'retrospective.view', params: { id: retroStore.currentRetro.id } };
-
   if (retroStore.currentRetro === undefined && typeof retroId === 'string') {
     const retrospective = await retrospectiveApi.getRetrospective(retroId);
 
     if (retrospective.error) return { name: '404', query: { id: retroId } };
 
     retroStore.retrospective.updateRetrospective(retrospective);
-    return { name: 'retrospective.view', params: { id: retrospective.id } };
+
+    console.log(to.name);
+
+    if (to.name !== 'retrospective.edit')
+      return { name: 'retrospective.view', params: { id: retrospective.id } };
   }
 });

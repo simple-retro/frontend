@@ -18,6 +18,10 @@
   const updatedName = ref(retrospective.name);
   const updatedDescription = ref(retrospective.description);
 
+  const toggleModal = () => {
+    isOpen.value = !isOpen.value;
+  };
+
   const updateRetrospective = async () => {
     if (
       updatedName.value === retrospective.name &&
@@ -43,36 +47,34 @@
 
     isOpen.value = !isOpen.value;
   };
+
+  defineExpose({ toggleModal });
 </script>
 
 <template>
-  <ModalifyComponent v-if="isOpen" @close="isOpen = !isOpen">
-    <div class="flex flex-col gap-6">
-      <h3>Update the retrospective</h3>
+  <ModalifyComponent v-if="isOpen" @close="toggleModal">
+    <div class="flex flex-col gap-2">
+      <label for="name" class="text-md font-bold text-gray-900">Name</label>
+      <input
+        id="name"
+        v-model="updatedName"
+        rows="4"
+        class="flex p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
+        placeholder="When you were a child..."
+      />
 
-      <div class="flex flex-col border-b-2">
-        <label for="name" class="border-b-2">Retrospective name </label>
-        <input id="name" v-model="updatedName" class="box-border border-black" placeholder="Name" />
-      </div>
+      <label for="description" class="text-md font-bold text-gray-900">Description</label>
+      <textarea
+        id="description"
+        v-model="updatedDescription"
+        rows="4"
+        class="flex mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
+        placeholder="Retrospective to talk about sprint 123, gather some feedback and be better!"
+      />
 
-      <div class="flex flex-col">
-        <label for="description" class="border-b-2">Retrospective description </label>
-        <textarea
-          id="description"
-          v-model="updatedDescription"
-          class="border-b-2"
-          cols="30"
-          rows="10"
-          placeholder="Description"
-        />
-      </div>
-
-      <div class="flex flex-row gap-4">
-        <BaseButton @click="updateRetrospective">Update</BaseButton>
-        <BaseButton @click="isOpen = !isOpen">Cancel</BaseButton>
-      </div>
+      <BaseButton :disabled="updatedName.length < 5" class="w-full" @click="updateRetrospective"
+        >Update retrospective</BaseButton
+      >
     </div>
   </ModalifyComponent>
-
-  <BaseButton @click="isOpen = !isOpen"><span>Update retrospective</span></BaseButton>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   const { style } = withDefaults(
     defineProps<{
-      style: 'WHITE' | 'DARK';
+      style?: 'WHITE' | 'DARK';
     }>(),
     {
       style: 'DARK',

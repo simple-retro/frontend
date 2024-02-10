@@ -31,7 +31,7 @@
 </script>
 
 <template>
-  <label for="question" class="block mb-2 text-md font-bold text-gray-900">Make a question</label>
+  <label for="question" class="block mb-2 text-md font-bold text-gray-900">Create a question</label>
   <textarea
     id="question"
     v-model="question"

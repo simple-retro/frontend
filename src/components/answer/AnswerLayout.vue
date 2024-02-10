@@ -25,7 +25,6 @@
 <template>
   <ModalifyComponent v-if="isOpen" @close="isOpen = !isOpen">
     <UpdateAnswer :answer="selectedAnswer!" @close="isOpen = false" />
-
     <PageDivider class="mt-3" />
     <DeleteAnswer class="mt-3" :answer="selectedAnswer!" @close="isOpen = false" />
   </ModalifyComponent>
