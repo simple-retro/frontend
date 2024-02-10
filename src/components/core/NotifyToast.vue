@@ -57,7 +57,7 @@
       </div>
       <div
         v-if="notification.type === NotificationType.Error"
-        class="flex items-center w-full max-w-xs p-3 text-gray-700 bg-white rounded-lg border shadow-2xl"
+        class="flex items-center w-screen max-w-md p-3 text-gray-700 bg-white rounded-lg border shadow-2xl"
         role="alert"
       >
         <div
@@ -104,7 +104,7 @@
       </div>
       <div
         v-if="notification.type === NotificationType.Warning"
-        class="flex items-center w-full max-w-xs p-3 text-gray-700 bg-white rounded-lg border shadow-2xl"
+        class="flex items-center w-screen max-w-md p-3 text-gray-700 bg-white rounded-lg border shadow-2xl"
         role="alert"
       >
         <div
@@ -126,7 +126,7 @@
         <div class="ms-3 text-sm font-normal">{{ notification.text }}</div>
         <button
           type="button"
-          class="ms-auto -mx-1.5 -my-1.5 bg-white hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
+          class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
           data-dismiss-target="#toast-warning"
           aria-label="Close"
           @click="notifyStore.clear(notification.id)"

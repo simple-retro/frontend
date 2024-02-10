@@ -30,8 +30,8 @@
 
     <div class="flex justify-between">
       <div class="flex gap-10">
-        <div class="cursor-pointer" @click="toggleAnswerModal">
-          <p class="text-xl font-bold underline max-w-3xl">
+        <div class="cursor-pointer max-w-3xl" @click="toggleAnswerModal">
+          <p class="text-xl font-bold underline break-word">
             {{ `Q${questionIndex}. ${question.text}` }}
           </p>
           <span class="text-sm">Click to answer</span>

@@ -4,21 +4,25 @@
   import GithubIcon from '../icons/GithubIcon.vue';
   import UserIcon from '../icons/UserIcon.vue';
   import ContactInfo from './ContactInfo.vue';
+  import { RouterLink } from 'vue-router';
   const isOpen = ref(false);
 </script>
 
 <template>
-  <footer class="bottom-0 left-0 w-full bg-white">
-    <div class="w-full mx-auto py-4">
+  <footer class="w-full bg-white bottom-0 flex">
+    <div class="w-full mx-auto py-4 self-end">
       <div class="mx-6 sm:flex sm:items-center sm:justify-between">
-        <a href="#" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+        <RouterLink
+          :to="{ name: 'home' }"
+          class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
+        >
           <img
             src="https://2.bp.blogspot.com/-5xvOsHhp-jw/WEdhxnTeN0I/AAAAAAAABbs/Xs_aOfeOx2wFFgLAH0_ZZwhFIiKb3WbvwCLcB/s1600/umaru%252Bgolang.png"
             class="h-8"
             alt="Simple Retro Logo"
           />
           <span class="self-center text-2xl font-semibold whitespace-nowrap">Simple Retro</span>
-        </a>
+        </RouterLink>
         <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0">
           <li>
             <a
@@ -42,15 +46,15 @@
         </ul>
       </div>
       <hr class="my-2 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-2" />
-      <span class="block text-sm text-gray-500 sm:text-center"
-        >© {{ new Date().getFullYear() }}
-        <a href="#" class="hover:underline">Simple Retro</a></span
-      >
+      <span class="block text-sm text-gray-500 sm:text-center">
+        © {{ new Date().getFullYear() }}
+        <RouterLink :to="{ name: 'home' }" class="hover:underline">Simple Retro</RouterLink>
+      </span>
     </div>
   </footer>
   <ModalifyComponent
     v-if="isOpen"
-    extra-classes="py-8 flex flex-col gap-4 "
+    extra-classes="py-8 flex flex-col gap-4 cursor-default"
     @close="isOpen = !isOpen"
   >
     <ContactInfo
@@ -74,6 +78,7 @@
       role="Frontend"
       avatar="https://avatars.githubusercontent.com/u/89055714?s=64&v=4"
       github-user="devkauab"
+      website-link="https://kauabarbosa.dev"
       linkedin-user="kauã-barbosa-do-nascimento-3b9832231"
     ></ContactInfo>
     <ContactInfo

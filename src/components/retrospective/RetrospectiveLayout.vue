@@ -22,13 +22,13 @@
 
 <template>
   <template v-if="retrospective">
-    <div class="space-y-2">
+    <div class="flex flex-col">
       <h1
         class="text-3xl font-bold tracking-tighter flex justify-between items-center sm:text-4xl md:text-5xl"
       >
         {{ retrospective.name }}
         <RouterLink
-          class="flex self-center"
+          class="flex self-center flex-shrink-0"
           :to="{ name: 'retrospective.edit', params: { id: retrospective.id } }"
         >
           <BaseButton :style="'WHITE'">Editar</BaseButton>

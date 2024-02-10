@@ -30,7 +30,7 @@
   <template v-if="retrospective">
     <UpdateRetrospective ref="updateRetro" :retrospective="retrospective" />
 
-    <div class="space-y-2">
+    <div class="flex flex-col">
       <h1
         class="text-3xl font-bold tracking-tighter flex justify-between items-center sm:text-4xl md:text-5xl"
       >
@@ -39,7 +39,7 @@
           <EditIcon class="ml-4" :size="42" />
         </div>
         <RouterLink
-          class="flex self-center"
+          class="flex self-center flex-shrink-0"
           :to="{ name: 'retrospective.view', params: { id: retrospective.id } }"
         >
           <BaseButton :style="'WHITE'">Back to Retro</BaseButton>
@@ -48,15 +48,13 @@
       <p v-if="retrospective.description" class="text-gray-500">
         {{ retrospective.description }}
       </p>
+      <BaseButton
+        class="w-full mt-10 transition-transform transform-gpu hover:scale-105 mb-10"
+        @click="toggleQuestionModal"
+      >
+        Create question
+      </BaseButton>
     </div>
-
-    <BaseButton
-      :style="'WHITE'"
-      class="w-full transition-transform transform-gpu hover:scale-105 mb-10"
-      @click="toggleQuestionModal"
-    >
-      Create question
-    </BaseButton>
 
     <ModalifyComponent v-if="isOpen" @close="toggleQuestionModal">
       <CreateQuestion @fetched="$event.success && toggleQuestionModal()" />
