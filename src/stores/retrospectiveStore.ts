@@ -6,6 +6,7 @@ export type Answer = {
   id: string;
   text: string;
   position: number;
+  question_id: string;
 };
 
 export type Question = {
@@ -34,7 +35,13 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
   const router = useRouter();
 
   const updateRetrospective = (retro: Retrospective) => {
-    currentRetro.value = retro;
+    if (currentRetro.value === undefined) {
+      currentRetro.value = retro;
+      return;
+    }
+
+    currentRetro.value.name = retro.name;
+    currentRetro.value.description = retro.description;
   };
 
   const deleteRetrospective = () => {
@@ -65,9 +72,7 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
 
     if (!question) return;
 
-    Object.entries(toUpdate).forEach(([key, value]) => {
-      question[key as 'id'] = value as string;
-    });
+    question.text = toUpdate.text ?? '';
   };
 
   const createAnswer = (answer: Answer & { question_id: string }) => {
@@ -93,9 +98,8 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
 
     if (!answer) return;
 
-    Object.entries(toUpdate).forEach(([key, value]) => {
-      answer[key as 'id'] = value as string;
-    });
+    answer.text = toUpdate.text;
+    answer.position = toUpdate.position;
   };
 
   const deleteAnswer = (answer: ID<Partial<Answer>, true>) => {
