@@ -3,7 +3,7 @@
   import questionApi from '../../services/questionApi';
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { useRetrospectiveStore } from '../../stores/retrospectiveStore';
-  import BaseButton from '../BaseButton.vue';
+  import BaseButton from '../core/BaseButton.vue';
 
   const notifyStore = useNotifyStore();
   const retroStore = useRetrospectiveStore();

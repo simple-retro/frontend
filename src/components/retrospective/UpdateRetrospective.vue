@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import BaseButton from '../BaseButton.vue';
-  import ModalifyComponent from '../ModalifyComponent.vue';
+  import BaseButton from '../core/BaseButton.vue';
+  import ModalifyComponent from '../core/ModalifyComponent.vue';
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { Retrospective, useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import retrospectiveApi from '../../services/retrospectiveApi';
@@ -19,6 +19,14 @@
   const updatedDescription = ref(retrospective.description);
 
   const updateRetrospective = async () => {
+    if (
+      updatedName.value === retrospective.name &&
+      updatedDescription.value === retrospective.description
+    ) {
+      isOpen.value = !isOpen.value;
+      return;
+    }
+
     const res = await retrospectiveApi.updateRetrospective({
       id: retrospective.id,
       description: updatedDescription.value,

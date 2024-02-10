@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { NotificationType, useNotifyStore } from '../stores/notifyStore';
+  import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { storeToRefs } from 'pinia';
 
   const notifyStore = useNotifyStore();

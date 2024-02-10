@@ -1,21 +1,29 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import BaseButton from '../BaseButton.vue';
-  import ModalifyComponent from '../ModalifyComponent.vue';
+  import BaseButton from '../core/BaseButton.vue';
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { Answer, useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import answerApi from '../../services/answerApi';
+  import { ref } from 'vue';
 
   const retroStore = useRetrospectiveStore();
   const notifyStore = useNotifyStore();
 
-  const isOpen = ref(false);
+  const emits = defineEmits<{
+    close: [];
+  }>();
 
   const { answer } = defineProps<{
     answer: Answer;
   }>();
 
+  const confirmedId = ref('');
+
   const deleteAnswer = async () => {
+    if (confirmedId.value !== answer.id) {
+      confirmedId.value = answer.id;
+      return;
+    }
+
     const res = await answerApi.deleteAnswer(answer.id);
 
     if (res?.error)
@@ -23,20 +31,16 @@
 
     retroStore.answer.deleteAnswer(answer);
 
-    isOpen.value = !isOpen.value;
+    emits('close');
   };
 </script>
 
 <template>
-  <ModalifyComponent v-if="isOpen" @close="isOpen = !isOpen">
-    <div class="flex flex-col gap-6">
-      <h3>Are you sure you want to delete this answer?</h3>
-      <div class="flex flex-row gap-4">
-        <BaseButton @click="deleteAnswer">Delete</BaseButton>
-        <BaseButton @click="isOpen = !isOpen">Cancel</BaseButton>
-      </div>
-    </div>
-  </ModalifyComponent>
+  <div class="flex flex-col gap-1 cursor-default">
+    <p class="block text-md font-bold text-gray-900">Delete answer</p>
+    <span>Do you want to delete this answer?</span>
+    <span v-if="confirmedId === answer.id">Press again to confirm.</span>
 
-  <BaseButton @click="isOpen = !isOpen"><span>Delete</span></BaseButton>
+    <BaseButton class="mt-2" @click="deleteAnswer">Delete answer</BaseButton>
+  </div>
 </template>

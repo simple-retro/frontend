@@ -26,7 +26,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
   let retries = 0;
 
   const reconnectLogic = () => {
-    if (retries >= 3) return destroy();
+    if (retries >= 3) return destroy('The Websocket connection could not be restablished');
 
     reconnectTimeout = setTimeout(
       () => {
@@ -89,11 +89,17 @@ export const useWebsocketStore = defineStore('websocket', () => {
     websocket.value.onclose = onClose;
   };
 
-  const destroy = () => {
+  const destroy = (reason?: string) => {
     clearTimeout(reconnectTimeout);
 
     websocket.value?.close(3015, 'Its a panic from my side. Do not take it bad');
     websocket.value = undefined;
+
+    notifyStore.panic(
+      reason ?? 'The websocket connection was destroyed',
+      retroStore.currentRetro?.id ?? '0',
+      false,
+    );
   };
 
   return { websocket, connect, destroy };

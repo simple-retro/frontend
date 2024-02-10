@@ -1,15 +1,14 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { Question } from '../../stores/retrospectiveStore';
-  import AnswerLayout from '../answer/AnswerLayout.vue';
-  import BaseButton from '../BaseButton.vue';
   import CreateAnswer from '../answer/CreateAnswer.vue';
-  import ModalifyComponent from '../ModalifyComponent.vue';
+  import ModalifyComponent from '../core/ModalifyComponent.vue';
   import DeleteQuestion from './DeleteQuestion.vue';
   import UpdateQuestion from './UpdateQuestion.vue';
 
-  const { question } = defineProps<{
+  const { question, questionIndex } = defineProps<{
     question: Question;
+    questionIndex: number;
   }>();
 
   const isOpen = ref(false);
@@ -22,16 +21,26 @@
 <template>
   <div>
     <ModalifyComponent v-if="isOpen" @close="toggleAnswerModal">
-      <CreateAnswer :question-id="question.id" @fetched="$event.success && toggleAnswerModal()" />
+      <CreateAnswer
+        :question="question"
+        :question-index="questionIndex"
+        @fetched="$event.success && toggleAnswerModal()"
+      />
     </ModalifyComponent>
 
-    <div class="flex gap-10">
-      <div>{{ question.text }}</div>
-      <BaseButton @click="toggleAnswerModal">Answer</BaseButton>
-      <DeleteQuestion :question="question" />
-      <UpdateQuestion :question="question" />
+    <div class="flex justify-between">
+      <div class="flex gap-10">
+        <div class="cursor-pointer" @click="toggleAnswerModal">
+          <p class="text-xl font-bold underline max-w-3xl">
+            {{ `Q${questionIndex}. ${question.text}` }}
+          </p>
+          <span class="text-sm">Click to answer</span>
+        </div>
+      </div>
+      <div class="flex gap-6">
+        <UpdateQuestion :question-index="questionIndex" :question="question" />
+        <DeleteQuestion :question-index="questionIndex" :question="question" />
+      </div>
     </div>
-
-    <AnswerLayout v-for="answer in question.answers" :key="answer.id" :answer="answer" />
   </div>
 </template>

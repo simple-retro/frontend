@@ -4,7 +4,7 @@
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import { useRouter } from 'vue-router';
-  import BaseButton from '../BaseButton.vue';
+  import BaseButton from '../core/BaseButton.vue';
 
   const notifyStore = useNotifyStore();
   const retroStore = useRetrospectiveStore();
@@ -35,18 +35,18 @@
         id="default-input"
         v-model="retroName"
         type="text"
-        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 peer"
         required
       />
       <label
         for="default-input"
         :disabled="disabledInteraction"
-        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+        class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
         >Retrospective name</label
       >
     </div>
     <div class="mb-5">
-      <label for="large-input" class="block mb-2 text-sm text-gray-500 dark:text-gray-400"
+      <label for="large-input" class="block mb-2 text-sm text-gray-500"
         >Restrospective description</label
       >
       <textarea
@@ -54,7 +54,7 @@
         v-model="retroDescription"
         type="text"
         :disabled="disabledInteraction"
-        class="block w-full p-4 text-gray-900 border-2 border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        class="block w-full p-4 text-gray-900 border-2 border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500"
       />
     </div>
     <BaseButton

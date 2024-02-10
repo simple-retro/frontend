@@ -1,12 +1,12 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { Retrospective } from '../../stores/retrospectiveStore';
-  import BaseButton from '../BaseButton.vue';
-  import ModalifyComponent from '../ModalifyComponent.vue';
-  import UpdateRetrospective from './UpdateRetrospective.vue';
-  import DeleteRetrospective from './DeleteRetrospective.vue';
+  import BaseButton from '../core/BaseButton.vue';
+  import ModalifyComponent from '../core/ModalifyComponent.vue';
   import QuestionLayout from '../question/QuestionLayout.vue';
   import CreateQuestion from '../question/CreateQuestion.vue';
+  import AnswerLayout from '../answer/AnswerLayout.vue';
+  import PageDivider from '../core/PageDivider.vue';
 
   const { retrospective } = defineProps<{
     retrospective: Retrospective;
@@ -20,36 +20,37 @@
 </script>
 
 <template>
-  <h1 class="text-4xl font-bold text-center mb-2">Retro {{ retrospective.name }}</h1>
-  <h3 v-if="retrospective.description" class="text-center mb-10">
-    {{ retrospective.description }}
-  </h3>
-
-  <div class="flex flex-col">
-    <div class="flex gap-10 justify-center">
-      <UpdateRetrospective :retrospective="retrospective" />
-      <DeleteRetrospective :retrospective="retrospective" />
-    </div>
-    <BaseButton
-      class="mx-auto w-80"
-      data-modal-target="default-modal"
-      data-modal-toggle="default-modal"
-      @click="toggleQuestionModal"
-    >
-      Create question
-    </BaseButton>
+  <div class="space-y-2">
+    <h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+      {{ retrospective.name }}
+    </h1>
+    <p v-if="retrospective.description" class="text-gray-500">
+      {{ retrospective.description }}
+    </p>
   </div>
+
+  <BaseButton
+    :style="'WHITE'"
+    class="w-full transition-transform transform-gpu hover:scale-105 mb-10"
+    @click="toggleQuestionModal"
+  >
+    Create question
+  </BaseButton>
 
   <ModalifyComponent v-if="isOpen" @close="toggleQuestionModal">
     <CreateQuestion @fetched="$event.success && toggleQuestionModal()" />
   </ModalifyComponent>
 
-  <div class="grid grid-cols-3 gap-10">
+  <div class="grid gap-4">
     <QuestionLayout
-      v-for="question in retrospective.questions"
+      v-for="(question, questionIndex) in retrospective.questions"
       :key="question.id"
+      :question-index="questionIndex + 1"
       :question="question"
-      class="bg-red-600"
     />
   </div>
+
+  <PageDivider v-if="retrospective.questions.length > 0" />
+
+  <AnswerLayout :questions="retrospective.questions" />
 </template>
