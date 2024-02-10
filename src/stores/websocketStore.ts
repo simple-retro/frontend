@@ -80,7 +80,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
     )
       return;
 
-    websocket.value = new WebSocket(`ws://${API_URL}/api${Endpoints.SocketHello}/${retroId}`);
+    websocket.value = new WebSocket(`ws://${API_URL}${Endpoints.SocketHello}/${retroId}`);
     retrospectiveId = retroId;
 
     websocket.value.onerror = onError;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = 'localhost:8080';
+export const API_URL = 'localhost:8080/api';
 
 export enum Endpoints {
   Question = '/question',
@@ -10,7 +10,7 @@ export enum Endpoints {
 }
 
 export const apiRequest = axios.create({
-  baseURL: `http://${API_URL}/api`,
+  baseURL: `http://${API_URL}`,
   withCredentials: true,
 });
 
