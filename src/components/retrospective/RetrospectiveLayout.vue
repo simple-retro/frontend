@@ -4,8 +4,6 @@
   import ModalifyComponent from '../core/ModalifyComponent.vue';
   import QuestionLayout from '../question/QuestionLayout.vue';
   import CreateQuestion from '../question/CreateQuestion.vue';
-  import AnswerLayout from '../answer/AnswerLayout.vue';
-  import PageDivider from '../core/PageDivider.vue';
   import { storeToRefs } from 'pinia';
   import { RouterLink } from 'vue-router';
   import BaseButton from '../core/BaseButton.vue';
@@ -49,11 +47,8 @@
         :key="question.id"
         :question-index="questionIndex + 1"
         :question="question"
+        :editable="false"
       />
     </div>
-
-    <PageDivider v-if="retrospective.questions.length > 0" />
-
-    <AnswerLayout :questions="retrospective.questions" />
   </template>
 </template>

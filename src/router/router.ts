@@ -59,7 +59,7 @@ router.beforeEach(async (to) => {
 
   if (
     (retroStore.currentRetro === undefined && typeof retroId === 'string') ||
-    (retroStore.currentRetro?.id && retroStore.currentRetro.id !== retroId)
+    (retroStore.currentRetro?.id && retroStore.currentRetro.id !== retroId && retroId !== undefined)
   ) {
     const retrospective = await retrospectiveApi.getRetrospective(`${retroId}`);
 

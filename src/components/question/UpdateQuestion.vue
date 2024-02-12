@@ -20,7 +20,7 @@
 
   const updateQuestion = async () => {
     if (updatedText.value === question.text) {
-      isOpen.value = !isOpen.value;
+      isOpen.value = false;
       return;
     }
 
@@ -34,12 +34,18 @@
 
     retroStore.question.updateQuestion(res);
 
-    isOpen.value = !isOpen.value;
+    isOpen.value = false;
   };
+
+  const openModal = () => {
+    isOpen.value = true;
+  };
+
+  defineExpose({ openModal });
 </script>
 
 <template>
-  <ModalifyComponent v-if="isOpen" @close="isOpen = !isOpen">
+  <ModalifyComponent v-if="isOpen" @close="isOpen = false">
     <label for="question" class="block mb-2 text-md font-bold text-gray-900">
       {{ `Q${questionIndex}. Update question` }}
     </label>
@@ -54,5 +60,5 @@
     <BaseButton class="w-full" @click="updateQuestion">Update question</BaseButton>
   </ModalifyComponent>
 
-  <BaseButton @click="isOpen = !isOpen"><span>Update question</span></BaseButton>
+  <BaseButton @click="openModal"><span>Update question</span></BaseButton>
 </template>
