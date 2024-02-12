@@ -1,6 +1,5 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import BaseButton from '../core/BaseButton.vue';
+  import { ref, watch } from 'vue';
   import ModalifyComponent from './ModalifyComponent.vue';
   import { useRouter } from 'vue-router';
 
@@ -35,6 +34,11 @@
     closeModal();
   };
 
+  const watchRetroId = () => {
+    if (retroId.value.length === exampleRetroId.length) jumpToRetro();
+  };
+
+  watch(retroId, watchRetroId);
   defineExpose({ openModal });
 </script>
 
@@ -53,13 +57,5 @@
       :placeholder="exampleRetroId"
       @keydown.enter="jumpToRetro"
     />
-
-    <BaseButton
-      :disabled="retroId.length !== exampleRetroId.length"
-      class="w-full"
-      @click="jumpToRetro"
-    >
-      Go to Retro
-    </BaseButton>
   </ModalifyComponent>
 </template>

@@ -44,6 +44,11 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
     currentRetro.value.description = retro.description;
   };
 
+  const createRetrospective = (retro: Retrospective) => {
+    currentRetro.value = undefined;
+    currentRetro.value = retro;
+  };
+
   const deleteRetrospective = () => {
     currentRetro.value = undefined;
     router.push({ name: 'home' });
@@ -123,7 +128,7 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
   const retrospective = {
     updateRetrospective,
     deleteRetrospective,
-    createRetrospective: updateRetrospective,
+    createRetrospective,
   };
 
   const answer = { createAnswer, updateAnswer, deleteAnswer };

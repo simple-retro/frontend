@@ -57,12 +57,16 @@ router.beforeEach(async (to) => {
   const retroStore = useRetrospectiveStore();
   const retroId = to.params.id;
 
-  if (retroStore.currentRetro === undefined && typeof retroId === 'string') {
-    const retrospective = await retrospectiveApi.getRetrospective(retroId);
+  if (
+    (retroStore.currentRetro === undefined && typeof retroId === 'string') ||
+    (retroStore.currentRetro?.id && retroStore.currentRetro.id !== retroId)
+  ) {
+    const retrospective = await retrospectiveApi.getRetrospective(`${retroId}`);
 
+    retroStore.currentRetro = undefined;
     if (retrospective.error) return { name: '404', query: { id: retroId } };
 
-    retroStore.retrospective.updateRetrospective(retrospective);
+    retroStore.retrospective.createRetrospective(retrospective);
     return;
   }
 
