@@ -7,6 +7,7 @@
   import CreateQuestion from '../question/CreateQuestion.vue';
   import EditIcon from '../icons/EditIcon.vue';
   import UpdateRetrospective from './UpdateRetrospective.vue';
+  import DeleteRetrospective from './DeleteRetrospective.vue';
   import { storeToRefs } from 'pinia';
 
   const retroStore = useRetrospectiveStore();
@@ -57,6 +58,8 @@
     <ModalifyComponent v-if="isOpen" @close="toggleQuestionModal">
       <CreateQuestion @fetched="$event.success && toggleQuestionModal()" />
     </ModalifyComponent>
+
+    <DeleteRetrospective :retrospective="retrospective" />
 
     <div class="grid gap-4">
       <QuestionLayout

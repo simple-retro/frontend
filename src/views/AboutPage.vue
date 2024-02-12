@@ -1,3 +1,18 @@
+<script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+  import { useRetrospectiveStore } from '../stores/retrospectiveStore';
+  import KnownRetros from '../components/core/KnownRetros.vue';
+  import { onMounted } from 'vue';
+
+  const retroStore = useRetrospectiveStore();
+
+  onMounted(() => {
+    retroStore.getKnownRetrospectives();
+  });
+
+  const { knownRetros } = storeToRefs(retroStore);
+</script>
+
 <template>
   <div class="min-h-screen">
     <div class="text-center">
@@ -14,6 +29,10 @@
         This tool is aimed at Agile teams practicing Scrum methodology, providing them with a
         platform to conduct effective retrospectives in a straightforward manner.
       </p>
+    </div>
+
+    <div v-if="knownRetros && knownRetros.length > 0">
+      <KnownRetros :retros="knownRetros" />
     </div>
   </div>
 </template>
