@@ -64,7 +64,11 @@ router.beforeEach(async (to) => {
     const retrospective = await retrospectiveApi.getRetrospective(`${retroId}`);
 
     retroStore.currentRetro = undefined;
-    if (retrospective.error) return { name: '404', query: { id: retroId } };
+
+    if (retrospective.error) {
+      retroStore.deleteFromKnowledge(`${retroId}`);
+      return { name: '404', query: { id: retroId } };
+    }
 
     retroStore.retrospective.createRetrospective(retrospective);
     return;

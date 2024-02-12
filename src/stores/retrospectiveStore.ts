@@ -22,6 +22,12 @@ export type Retrospective = {
   questions: Question[];
 };
 
+export type KnownRetro = {
+  id: string;
+  name: string;
+  lastAccess: number;
+};
+
 export type ID<T, Question = false> = Question extends true
   ? T & { id: string; question_id: string }
   : T & { id: string };
@@ -32,9 +38,61 @@ const duplicata = (event: unknown) => {
 
 export const useRetrospectiveStore = defineStore('retrospective', () => {
   const currentRetro = ref<Retrospective>();
+  const knownRetros = ref<null | KnownRetro[]>(null);
   const router = useRouter();
 
+  const settedArray = (retros: KnownRetro[]): KnownRetro[] => {
+    const uniqueIdsSet = new Set();
+
+    return retros.filter((obj) => {
+      if (uniqueIdsSet.has(obj.id)) return false;
+
+      uniqueIdsSet.add(obj.id);
+      return true;
+    });
+  };
+
+  const getKnownRetrospectives = (): KnownRetro[] => {
+    if (!knownRetros.value) {
+      const fromStorage = localStorage.getItem('known_retros');
+
+      if (!fromStorage) return [];
+
+      const parsed = (JSON.parse(fromStorage) as KnownRetro[]) ?? [];
+
+      knownRetros.value = settedArray(parsed);
+
+      localStorage.setItem('known_retros', JSON.stringify(knownRetros.value));
+
+      return knownRetros.value;
+    }
+
+    return knownRetros.value;
+  };
+
+  const deleteFromKnowledge = (retroId: string) => {
+    knownRetros.value = getKnownRetrospectives();
+
+    const hasIndex = knownRetros.value.findIndex((r) => r.id === retroId);
+
+    if (hasIndex !== -1) knownRetros.value.splice(hasIndex, 1);
+
+    localStorage.setItem('known_retros', JSON.stringify(knownRetros.value));
+  };
+
+  const learnRetrospective = (retro: Retrospective) => {
+    knownRetros.value = getKnownRetrospectives();
+
+    knownRetros.value.unshift({ ...retro, lastAccess: Date.now() });
+
+    knownRetros.value = settedArray(knownRetros.value);
+
+    localStorage.setItem('known_retros', JSON.stringify(knownRetros.value));
+  };
+
   const updateRetrospective = (retro: Retrospective) => {
+    learnRetrospective(retro);
+
     if (currentRetro.value === undefined) {
       currentRetro.value = retro;
       return;
@@ -45,11 +103,14 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
   };
 
   const createRetrospective = (retro: Retrospective) => {
+    learnRetrospective(retro);
+
     currentRetro.value = undefined;
     currentRetro.value = retro;
   };
 
   const deleteRetrospective = () => {
+    deleteFromKnowledge(currentRetro.value?.id ?? '');
     currentRetro.value = undefined;
     router.push({ name: 'home' });
   };
@@ -133,5 +194,13 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
 
   const answer = { createAnswer, updateAnswer, deleteAnswer };
 
-  return { currentRetro, question, retrospective, answer };
+  return {
+    currentRetro,
+    question,
+    retrospective,
+    answer,
+    getKnownRetrospectives,
+    deleteFromKnowledge,
+    knownRetros,
+  };
 });
