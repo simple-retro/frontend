@@ -7,6 +7,8 @@
   import UpdateQuestion from './UpdateQuestion.vue';
   import BaseButton from '../core/BaseButton.vue';
   import AnswerLayout from '../answer/AnswerLayout.vue';
+  import OpenEyeIcon from '../icons/OpenEyeIcon.vue';
+  import ClosedEyeIcon from '../icons/ClosedEyeIcon.vue';
 
   const { question, questionIndex, editable } = defineProps<{
     question: Question;
@@ -37,14 +39,16 @@
     </ModalifyComponent>
 
     <div class="flex justify-between items-center">
-      <p class="text-xl max-w-3xl font-bold break-word">
+      <p
+        class="text-xl max-w-3xl font-bold break-word flex gap-2 cursor-pointer"
+        @click="toggleDisplayAnswers"
+      >
         {{ `Q${questionIndex}. ${question.text}` }}
-        <BaseButton class="w-44" @click="toggleDisplayAnswers">{{
-          answersAreShown ? 'Hide answers' : 'Show answers'
-        }}</BaseButton>
+        <OpenEyeIcon v-if="answersAreShown" :size="24" />
+        <ClosedEyeIcon v-else :size="24" />
       </p>
 
-      <div class="flex gap-6 flex-shrink-0">
+      <div class="flex gap-2 flex-shrink-0">
         <template v-if="editable">
           <UpdateQuestion :question-index="questionIndex" :question="question" />
           <DeleteQuestion :question-index="questionIndex" :question="question" />

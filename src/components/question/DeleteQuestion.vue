@@ -36,12 +36,12 @@
         Are you sure you want to delete this question? Note that this action is irreversible, and
         will pulverize all answers
       </span>
-      <div class="flex flex-row gap-4">
-        <BaseButton @click="deleteQuestion">Delete</BaseButton>
+      <div class="flex flex-row gap-2 justify-end">
         <BaseButton @click="isOpen = !isOpen">Cancel</BaseButton>
+        <BaseButton :style="'RED'" @click="deleteQuestion">Delete</BaseButton>
       </div>
     </div>
   </ModalifyComponent>
 
-  <BaseButton @click="isOpen = !isOpen"><span>Delete question</span></BaseButton>
+  <BaseButton :style="'RED'" @click="isOpen = !isOpen"><span>Delete question</span></BaseButton>
 </template>

@@ -1,21 +1,36 @@
 <script setup lang="ts">
+  import { computed } from 'vue';
+
   const { style } = withDefaults(
     defineProps<{
-      style?: 'WHITE' | 'DARK';
+      style?: 'WHITE' | 'BLACK' | 'RED';
     }>(),
     {
-      style: 'DARK',
+      style: 'BLACK',
     },
   );
+
+  const colors = computed(() => ({
+    'border-gray-400': style === 'WHITE',
+    'bg-white': style === 'WHITE',
+    'hover:border-gray-500': style === 'WHITE',
+    'disabled:hover:border-gray-200': style === 'WHITE',
+    'disabled:text-gray-600': style === 'WHITE',
+
+    'text-white': ['BLACK', 'RED'].includes(style),
+    'bg-[#181818]': style === 'BLACK',
+    'disabled:text-gray-300': ['BLACK', 'RED'].includes(style),
+    'disabled:bg-gray-900': style === 'BLACK',
+
+    'bg-red-600': style === 'RED',
+    'disabled:bg-red-700': style === 'RED',
+  }));
 </script>
 
 <template>
   <button
-    :class="
-      style === 'WHITE'
-        ? 'inline-flex h-10 items-center justify-center rounded-md border border-gray-400 bg-white text-sm shadow-sm px-8 hover:shadow-md hover:border-gray-500 hover:opacity-95 transition-opacity disabled:hover:opacity-100 disabled:hover:shadow-sm disabled:hover:border-gray-200 disabled:text-gray-600  disabled:cursor-not-allowed'
-        : 'inline-flex h-10 items-center justify-center rounded-md border text-white text-sm shadow-sm px-8 bg-[#181818] hover:opacity-95 transition-opacity disabled:hover:opacity-100 disabled:text-gray-300 disabled:bg-gray-900 disabled:cursor-not-allowed'
-    "
+    :class="colors"
+    class="inline-flex h-10 items-center justify-center rounded-md border text-sm shadow-sm px-8 hover:shadow-md hover:opacity-95 transition-opacity disabled:hover:opacity-100 disabled:hover:shadow-s disabled:cursor-not-allowed"
   >
     <slot />
   </button>

@@ -41,6 +41,6 @@
     <span>Do you want to delete this answer?</span>
     <span v-if="confirmedId === answer.id">Press again to confirm.</span>
 
-    <BaseButton class="mt-2" @click="deleteAnswer">Delete answer</BaseButton>
+    <BaseButton :style="'RED'" class="mt-2" @click="deleteAnswer">Delete answer</BaseButton>
   </div>
 </template>

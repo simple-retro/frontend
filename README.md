@@ -1,79 +1,58 @@
 # 👨‍💻 Simple Retro
 
-A simplifi
+## 🔥 | Running the project
 
-## 🔥 | Running
-
-To run Menhera Van GOgh, you need to have [Docker](https://www.docker.com/) in your machine. You have two options of installation, follow the one that applies to you. It is good to have a [Redis](https://redis.io/) instance to improve the performance of the application.
-
-### 🔮 | Building the Image
-
-> If you want to build the image yourself, you can do it by following these steps:
+To run Simple Retro, you need to have [Node.js](https://www.docker.com/) in your machine. We recommend the usage of the `Yarn` package manager, so the instalation follows the `yarn.lock` lockfile.
 
 1. 🧹 Clone the repository
 
 ```bash
-git clone https://github.com/MenheraBot/MenheraVanGOgh.git
+git clone git@github.com:simple-retro/frontend.git
 ```
 
-2. 💻 Building the Image
+2. 💻 Installing the dependencies
 
 ```bash
-docker build . --tag vangogh
+yarn install
 ```
 
-3. 🏃‍♂️ Running a Container
+3. 🔑 Preparing the enviroment
+
+When building the application, the environment variables defined in the `.env` file will be used to replace all envs with their value in the bundled JavaScript files.
 
 ```bash
-docker run --name VangoghServer -p 2080:2080 -e "TOKEN=" -e "REDIS_URL=" -e "REDIS_DB=" --restart unless-stopped -d -t vangogh
+cp .env.example .env
 ```
 
-> Obs: the `TOKEN` is just for authentication purpuses. `REDIS_URL` and `REDIS_DB` are the variables to connect to your redis instance. The `restart` policy used is because, well, no one wants a server down!
+> Replace all variables with the values ​​that suit your need.
 
-Now we can connect to HTTP to 2080 port!
-
-### 🎉 | Downloading the Image
-
-> If you don't really want all the source code, and just want to execute the bot, you can just donwload the image from the Container Registry.
-
-1. 📥 Download the image
+4. 🏃‍♂️ Running
 
 ```bash
-docker pull ghcr.io/menherabot/vangogh:latest
+yarn dev --host
 ```
 
-> You need to be [logged in](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry)
+> Now, access the address in your terminal 🔥
 
-2. 🏃‍♂️ Running a Container
+### 📦 Buiding for production
+
+To deploy the Simple Retro, bundle all files with the following command:
 
 ```bash
-docker run --name VangoghServer -p 2080:2080 -e "TOKEN=ReplaceWithToken" -e "REDIS_URL=" -e "REDIS_DB=" --restart unless-stopped -d -t ghcr.io/menherabot/vangogh:latest
+yarn build
 ```
 
-> Obs: the `TOKEN` is just for authentication purpuses.`REDIS_URL` and `REDIS_DB` are the variables to connect to your redis instance. The `restart` policy used is because, well, no one wants a server down!
-
-Creeper? Awww maan. Van GOgh is on!
+All files will be available in the `dist` folder. When deploying, you need to return the `index.html` file to all requests that dont fit any existing files.
 
 ## 🔨 | Made With
 
-- [Go](https://go.dev/)
-- [Gin](https://github.com/gin-gonic/gin)
-- [Go Graphics](https://github.com/fogleman/gg)
-
-## 💖 | Special Thanks
-
-I shall thank [RabbitHouseCorp](https://github.com/RabbitHouseCorp) very much for [providing inspiration](https://github.com/RabbitHouseCorp) for this repository. It's the first time I've used Go, totally a long shot, not knowing anything, and thanks to them, I was able to ~~steal most of the code~~ start making this project, mainly using the Go Graphics base as inspiration. Thank you very much.
+- [Node.js](https://nodejs.org/)
+- [Vite](https://vitejs.dev/)
+- [Vue.js](https://vuejs.org/)
+- [TailwindCss](https://tailwindcss.com/)
 
 ## ⚖️ | License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## 📧 | Contact
-
-Discord: **Luxanna#5757**
-
-Twitter: **[@Luxanna_Dev](https://twitter.com/Luxanna_Dev)**
-
 ---
-
-MenheraBot was made with ❤️ by Luxanna.

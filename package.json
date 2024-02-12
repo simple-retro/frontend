@@ -1,11 +1,11 @@
 {
   "name": "simple-retro",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "dev": "NODE_ENV=development vite",
+    "build": "NODE_ENV=production vue-tsc && NODE_ENV=production vite build",
     "preview": "vite preview"
   },
   "dependencies": {
