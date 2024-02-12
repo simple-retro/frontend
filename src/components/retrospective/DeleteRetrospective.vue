@@ -33,13 +33,18 @@
 <template>
   <ModalifyComponent v-if="isOpen" @close="isOpen = !isOpen">
     <div class="flex flex-col gap-6">
-      <h3>Are you sure you want to delete the entire retrospective?</h3>
-      <div class="flex flex-row gap-4">
-        <BaseButton @click="deleteRetrospective">Delete</BaseButton>
+      <p class="block text-md font-bold text-gray-900">Delete retrospective?</p>
+      <span>
+        Are you sure you want to delete the entire retrospective? This action can't be undone
+      </span>
+      <div class="flex flex-row gap-2 justify-end">
         <BaseButton @click="isOpen = !isOpen">Cancel</BaseButton>
+        <BaseButton :style="'RED'" @click="deleteRetrospective">Delete</BaseButton>
       </div>
     </div>
   </ModalifyComponent>
 
-  <BaseButton @click="isOpen = !isOpen"><span>Delete retrospective</span></BaseButton>
+  <BaseButton :style="'RED'" @click="isOpen = !isOpen"
+    ><span>Delete retrospective</span></BaseButton
+  >
 </template>

@@ -16,11 +16,7 @@
           :to="{ name: 'home' }"
           class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
         >
-          <img
-            src="https://2.bp.blogspot.com/-5xvOsHhp-jw/WEdhxnTeN0I/AAAAAAAABbs/Xs_aOfeOx2wFFgLAH0_ZZwhFIiKb3WbvwCLcB/s1600/umaru%252Bgolang.png"
-            class="h-8"
-            alt="Simple Retro Logo"
-          />
+          <img src="/logo_nobg.png" class="h-8" alt="Simple Retro Logo" />
           <span class="self-center text-2xl font-semibold whitespace-nowrap">Simple Retro</span>
         </RouterLink>
         <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0">
@@ -45,7 +41,7 @@
           </li>
         </ul>
       </div>
-      <hr class="my-2 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-2" />
+      <hr class="my-2 border-gray-200 sm:mx-auto lg:my-2" />
       <span class="block text-sm text-gray-500 sm:text-center">
         © {{ new Date().getFullYear() }}
         <RouterLink :to="{ name: 'home' }" class="hover:underline">Simple Retro</RouterLink>

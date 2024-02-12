@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = 'localhost:8080/api';
+export const API_URL = import.meta.env.VITE_API_URL;
 
 export enum Endpoints {
   Question = '/question',
@@ -10,7 +10,7 @@ export enum Endpoints {
 }
 
 export const apiRequest = axios.create({
-  baseURL: `http://${API_URL}`,
+  baseURL: `${import.meta.env.PROD ? 'https' : 'http'}://${API_URL}`,
   withCredentials: true,
 });
 

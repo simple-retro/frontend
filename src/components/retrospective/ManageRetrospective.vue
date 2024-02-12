@@ -30,20 +30,24 @@
     <UpdateRetrospective ref="updateRetro" :retrospective="retrospective" />
 
     <div class="flex flex-col">
-      <h1
-        class="text-3xl font-bold tracking-tighter flex justify-between items-center sm:text-4xl md:text-5xl"
-      >
-        <div class="flex cursor-pointer" @click="toogleEditRetroModal">
-          {{ retrospective.name }}
-          <EditIcon class="ml-4" :size="42" />
+      <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+          <div class="flex cursor-pointer" @click="toogleEditRetroModal">
+            {{ retrospective.name }}
+            <EditIcon class="ml-4" :size="42" />
+          </div>
+        </h1>
+
+        <div class="flex gap-2">
+          <RouterLink
+            class="flex self-center flex-shrink-0"
+            :to="{ name: 'retrospective.view', params: { id: retrospective.id } }"
+          >
+            <BaseButton class="font-bold" :style="'WHITE'">Back to Retro</BaseButton>
+          </RouterLink>
+          <DeleteRetrospective :retrospective="retrospective" />
         </div>
-        <RouterLink
-          class="flex self-center flex-shrink-0"
-          :to="{ name: 'retrospective.view', params: { id: retrospective.id } }"
-        >
-          <BaseButton :style="'WHITE'">Back to Retro</BaseButton>
-        </RouterLink>
-      </h1>
+      </div>
       <p v-if="retrospective.description" class="text-gray-500">
         {{ retrospective.description }}
       </p>
@@ -58,8 +62,6 @@
     <ModalifyComponent v-if="isOpen" @close="toggleQuestionModal">
       <CreateQuestion @fetched="$event.success && toggleQuestionModal()" />
     </ModalifyComponent>
-
-    <DeleteRetrospective :retrospective="retrospective" />
 
     <div class="grid gap-4">
       <QuestionLayout

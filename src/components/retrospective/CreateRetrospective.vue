@@ -21,10 +21,14 @@
 
     disableIntearction.value = false;
 
-    if (retro.error) return notifyStore.notify('An error ocrured', NotificationType.Error);
+    if (retro.error)
+      return notifyStore.notify(
+        'An error occurred when creating the retrospective',
+        NotificationType.Error,
+      );
 
     retroStore.retrospective.createRetrospective(retro);
-    router.push({ name: 'retrospective.view', params: { id: retro.id } });
+    router.push({ name: 'retrospective.edit', params: { id: retro.id } });
   };
 </script>
 

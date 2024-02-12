@@ -12,7 +12,7 @@
 
 <template>
   <div class="container grid gap-4 px-4 py-8 md:py-12 md:px-6">
-    <h3 class="text-center text-3xl font-bold">Known retros</h3>
+    <h3 class="text-center text-3xl font-bold">Known Retrospectives</h3>
     <div class="relative w-full overflow-auto">
       <table class="w-full caption-bottom text-sm">
         <thead>
