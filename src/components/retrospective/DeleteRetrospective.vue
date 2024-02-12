@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import BaseButton from '../BaseButton.vue';
-  import ModalifyComponent from '../ModalifyComponent.vue';
+  import BaseButton from '../core/BaseButton.vue';
+  import ModalifyComponent from '../core/ModalifyComponent.vue';
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { Retrospective, useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import retrospectiveApi from '../../services/retrospectiveApi';

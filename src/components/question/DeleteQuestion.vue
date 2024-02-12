@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import BaseButton from '../BaseButton.vue';
-  import ModalifyComponent from '../ModalifyComponent.vue';
+  import BaseButton from '../core/BaseButton.vue';
+  import ModalifyComponent from '../core/ModalifyComponent.vue';
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import questionApi from '../../services/questionApi';
   import { Question, useRetrospectiveStore } from '../../stores/retrospectiveStore';
@@ -11,8 +11,9 @@
 
   const isOpen = ref(false);
 
-  const { question } = defineProps<{
+  const { question, questionIndex } = defineProps<{
     question: Question;
+    questionIndex: number;
   }>();
 
   const deleteQuestion = async () => {
@@ -29,8 +30,12 @@
 
 <template>
   <ModalifyComponent v-if="isOpen" @close="isOpen = !isOpen">
-    <div class="flex flex-col gap-6">
-      <h3>Are you sure you want to delete this question?</h3>
+    <div class="flex flex-col gap-3 cursor-default">
+      <p class="block text-md font-bold text-gray-900">{{ `Q${questionIndex}. Confirm delete` }}</p>
+      <span>
+        Are you sure you want to delete this question? Note that this action is irreversible, and
+        will pulverize all answers
+      </span>
       <div class="flex flex-row gap-4">
         <BaseButton @click="deleteQuestion">Delete</BaseButton>
         <BaseButton @click="isOpen = !isOpen">Cancel</BaseButton>
@@ -38,5 +43,5 @@
     </div>
   </ModalifyComponent>
 
-  <BaseButton @click="isOpen = !isOpen"><span>Delete</span></BaseButton>
+  <BaseButton @click="isOpen = !isOpen"><span>Delete question</span></BaseButton>
 </template>

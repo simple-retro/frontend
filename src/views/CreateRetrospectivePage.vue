@@ -3,8 +3,10 @@
 </script>
 
 <template>
-  <div class="mt-10 max-w-3xl mx-auto">
-    <h1 class="text-4xl font-bold">Create a retrospective</h1>
-    <CreateRestrospective class="mt-5" />
+  <div class="w-1/2 mx-auto">
+    <h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+      Create a retrospective
+    </h1>
+    <CreateRestrospective class="mt-6" />
   </div>
 </template>

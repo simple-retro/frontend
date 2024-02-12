@@ -12,17 +12,17 @@ export enum NotificationType {
 export const useNotifyStore = defineStore('notify', () => {
   const router = useRouter();
   const websocket = useWebsocketStore();
-  const notifications = ref<{ text: string; type: NotificationType; id: number }[]>([]);
+  const notifications = ref<{ text: string; type: NotificationType; id: string }[]>([]);
 
-  const clear = (notificationId: number): void => {
+  const clear = (notificationId: string): void => {
     notifications.value = notifications.value.filter((n) => n.id !== notificationId);
   };
 
-  const panic = (reason: string, retroId: string) => {
-    const notification = { text: reason, type: NotificationType.Error, id: Date.now() };
+  const panic = (reason: string, retroId: string, destroyConnection = true) => {
+    const notification = { text: reason, type: NotificationType.Error, id: `panic-${Date.now()}` };
     notifications.value.push(notification);
 
-    websocket.destroy();
+    if (destroyConnection) websocket.destroy();
 
     router.push({ name: '500', query: { id: retroId } });
 
@@ -32,7 +32,7 @@ export const useNotifyStore = defineStore('notify', () => {
   };
 
   const notify = (text: string, type: NotificationType) => {
-    const notification = { text, type, id: Date.now() };
+    const notification = { text, type, id: `${Date.now()}` };
     notifications.value.push(notification);
 
     setTimeout(() => {

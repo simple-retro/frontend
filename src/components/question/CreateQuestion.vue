@@ -3,7 +3,7 @@
   import questionApi from '../../services/questionApi';
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { useRetrospectiveStore } from '../../stores/retrospectiveStore';
-  import BaseButton from '../BaseButton.vue';
+  import BaseButton from '../core/BaseButton.vue';
 
   const notifyStore = useNotifyStore();
   const retroStore = useRetrospectiveStore();
@@ -31,7 +31,7 @@
 </script>
 
 <template>
-  <label for="question" class="block mb-2 text-md font-bold text-gray-900">Make a question</label>
+  <label for="question" class="block mb-2 text-md font-bold text-gray-900">Create a question</label>
   <textarea
     id="question"
     v-model="question"
