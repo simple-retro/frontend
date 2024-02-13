@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useWebsocketStore } from './websocketStore';
+import logger from '../services/logger';
 
 export enum NotificationType {
   Success = 'success',
@@ -23,6 +24,8 @@ export const useNotifyStore = defineStore('notify', () => {
     notifications.value.push(notification);
 
     if (destroyConnection) websocket.destroy();
+
+    logger.error(`Fatal uncaught error in retro ID ${retroId}. Reason: ${reason}`);
 
     router.push({ name: '500', query: { id: retroId } });
 
