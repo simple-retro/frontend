@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useRetrospectiveStore } from '../stores/retrospectiveStore';
 import retrospectiveApi from '../services/retrospectiveApi';
+import { useWebsocketStore } from '../stores/websocketStore';
+import logger from '../services/logger';
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -55,7 +57,15 @@ export const router = createRouter({
 
 router.beforeEach(async (to) => {
   const retroStore = useRetrospectiveStore();
+  const wsStore = useWebsocketStore();
   const retroId = to.params.id;
+
+  const toName = to.name?.toString() ?? '';
+
+  if (!['edit', 'view'].some((a) => toName.includes(a)) && wsStore.websocket) {
+    logger.debug('Closing current websocket');
+    wsStore.close();
+  }
 
   if (
     (retroStore.currentRetro === undefined && typeof retroId === 'string') ||
