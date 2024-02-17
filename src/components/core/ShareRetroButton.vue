@@ -7,6 +7,7 @@
   import ModalifyComponent from './ModalifyComponent.vue';
   import PageDivider from './PageDivider.vue';
   import BaseButton from './BaseButton.vue';
+  import TelegramIconVue from '../icons/TelegramIcon.vue';
 
   const notifyStore = useNotifyStore();
   const retroStore = useRetrospectiveStore();
@@ -25,6 +26,8 @@
   };
 
   const retroLink = `${window.location.origin}/retrospective/${retroStore.currentRetro?.id}`;
+  const shareText = `Join me on the retrospective ${retroStore.currentRetro?.name}!`;
+  const telegramLink = `https://t.me/share/url?url=${retroLink}&text=${encodeURI(shareText)}`;
 
   const getRetroLink = () => {
     copyToClipboard(retroLink);
@@ -37,7 +40,12 @@
 
 <template>
   <ModalifyComponent v-if="showModal" @close="showModal = false">
-    <h1 class="text-2xl mb-5 cursor-default font-bold">Share the retrospective</h1>
+    <h1 class="flex justify-between text-2xl mb-5 cursor-default font-bold">
+      <span>Share the retrospective</span>
+      <a target="_blank" class="cursor-pointer" :href="telegramLink"
+        ><TelegramIconVue :size="32"
+      /></a>
+    </h1>
     <div class="cursor-pointer" @click="getRetroLink">
       <label class="text-md font-bold cursor-pointer text-gray-900">
         Click to copy the retrospective URL

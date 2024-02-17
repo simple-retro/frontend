@@ -22,20 +22,21 @@
 <template>
   <template v-if="retrospective">
     <div class="flex flex-col">
-      <h1
-        class="text-3xl font-bold tracking-tighter flex justify-between items-center sm:text-4xl md:text-5xl"
-      >
-        {{ retrospective.name }}
+      <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+          {{ retrospective.name }}
+        </h1>
         <div class="flex gap-2">
           <ShareRetro />
           <RouterLink
             class="flex self-center flex-shrink-0"
             :to="{ name: 'retrospective.edit', params: { id: retrospective.id } }"
           >
-            <BaseButton :style="'WHITE'">Edit</BaseButton>
+            <BaseButton class="font-bold" :style="'WHITE'">Edit</BaseButton>
           </RouterLink>
         </div>
-      </h1>
+      </div>
+
       <p v-if="retrospective.description" class="text-gray-500">
         {{ retrospective.description }}
       </p>
