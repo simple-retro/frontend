@@ -21,6 +21,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
   const retroStore = useRetrospectiveStore();
 
   const websocket = ref<WebSocket>();
+  const isReconnecting = ref(false);
   let retrospectiveId = '';
 
   let retryPingTimeout: number;
@@ -39,6 +40,8 @@ export const useWebsocketStore = defineStore('websocket', () => {
   const reconnectLogic = () => {
     if (reconnectRetries >= 3) return destroy('The Websocket connection could not be restablished');
 
+    isReconnecting.value = true;
+
     reconnectTimeout = setTimeout(
       () => {
         reconnectRetries += 1;
@@ -54,7 +57,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
 
     pingsSent += 1;
 
-    if (pingsSent > 5) return destroy('The websocket stopped responding');
+    if (pingsSent > 5) return close('The websocket stopped responding', true);
 
     logger.debug(`<- Sending ping ${pingsSent}`);
     websocket.value.send(JSON.stringify({ type: 'ping' }));
@@ -89,6 +92,8 @@ export const useWebsocketStore = defineStore('websocket', () => {
 
     if (data.type === 'pong') return ackPong();
 
+    logger.debug(`Websocket message received: ${message.data}`);
+
     const functionName = `${data.action}${capitalize(data.type)}` as const;
 
     const toExecute = retroStore[data.type as 'question'][functionName as 'createQuestion'];
@@ -111,6 +116,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
     logger.debug('Websocket connected!');
     reconnectRetries = 0;
     pingsSent = 0;
+    isReconnecting.value = false;
 
     const retro = await retrospectiveApi.getRetrospective(retrospectiveId);
     if (!retro.error) retroStore.retrospective.updateRetrospective(retro);
@@ -168,11 +174,12 @@ export const useWebsocketStore = defineStore('websocket', () => {
     reconnectRetries = 0;
 
     websocket.value = undefined;
+    isReconnecting.value = false;
   };
 
-  const close = () => {
-    websocket.value?.close(1000, 'The user left the retrospective');
-    $reset();
+  const close = (message: string, allowReconnect: boolean) => {
+    websocket.value?.close(1000, message);
+    if (!allowReconnect) $reset();
   };
 
   const destroy = (reason?: string) => {
@@ -187,5 +194,5 @@ export const useWebsocketStore = defineStore('websocket', () => {
     );
   };
 
-  return { websocket, connect, destroy, close };
+  return { websocket, isReconnecting, connect, destroy, close };
 });
