@@ -64,7 +64,7 @@ router.beforeEach(async (to) => {
 
   if (!['edit', 'view'].some((a) => toName.includes(a)) && wsStore.websocket) {
     logger.debug('Closing current websocket');
-    wsStore.close();
+    wsStore.close('The user left the retrospective', false);
   }
 
   if (

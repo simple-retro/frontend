@@ -59,7 +59,9 @@
 
     <div v-if="answersAreShown" class="overflow-hidden transition-max-height ease-out duration-300">
       <template v-if="question.answers.length > 0">
-        <AnswerLayout v-for="answer in question.answers" :key="answer.id" :answer="answer" />
+        <TransitionGroup name="fade">
+          <AnswerLayout v-for="answer in question.answers" :key="answer.id" :answer="answer" />
+        </TransitionGroup>
       </template>
       <span v-else>There are no answers yet...</span>
     </div>

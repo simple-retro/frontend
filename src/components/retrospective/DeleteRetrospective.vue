@@ -44,7 +44,7 @@
     </div>
   </ModalifyComponent>
 
-  <BaseButton :style="'RED'" @click="isOpen = !isOpen"
-    ><span>Delete retrospective</span></BaseButton
-  >
+  <BaseButton class="font-bold" :style="'RED'" @click="isOpen = !isOpen">
+    Delete retrospective
+  </BaseButton>
 </template>
