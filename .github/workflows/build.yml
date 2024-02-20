@@ -1,0 +1,29 @@
+name: Publish version
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish-docker-image:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and publish Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/frontend:latest
+            ghcr.io/${{ github.repository_owner }}/frontend:${{ github.ref_name }}
+        env:
+          DOCKER_USERNAME: ${{ github.actor }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
