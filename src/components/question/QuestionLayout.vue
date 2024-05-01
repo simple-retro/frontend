@@ -17,7 +17,7 @@
   }>();
 
   const isCreateModalOpen = ref(false);
-  const answersAreShown = ref(false);
+  const answersAreShown = ref(true);
 
   const toggleCreateAnswerModal = () => {
     isCreateModalOpen.value = !isCreateModalOpen.value;
