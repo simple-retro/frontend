@@ -44,8 +44,8 @@
         @click="toggleDisplayAnswers"
       >
         {{ `Q${questionIndex}. ${question.text}` }}
-        <OpenEyeIcon v-if="answersAreShown" :size="24" />
-        <ClosedEyeIcon v-else :size="24" />
+        <OpenEyeIcon v-if="answersAreShown" class="flex flex-shrink-0" :size="24" />
+        <ClosedEyeIcon v-else class="flex flex-shrink-0" :size="24" />
       </p>
 
       <div class="flex gap-2 flex-shrink-0">
