@@ -11,12 +11,12 @@
 
   const isOpen = ref(false);
 
-  const { retrospective } = defineProps<{
+  const props = defineProps<{
     retrospective: Retrospective;
   }>();
 
   const deleteRetrospective = async () => {
-    const res = await retrospectiveApi.deleteRestrospective(retrospective.id);
+    const res = await retrospectiveApi.deleteRestrospective(props.retrospective.id);
 
     if (res?.error)
       return notifyStore.notify(

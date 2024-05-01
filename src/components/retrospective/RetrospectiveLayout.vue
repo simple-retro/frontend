@@ -23,10 +23,10 @@
   <template v-if="retrospective">
     <div class="flex flex-col">
       <div class="flex justify-between items-center">
-        <h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+        <h1 class="text-3xl font-bold break-all tracking-tighter sm:text-4xl md:text-5xl">
           {{ retrospective.name }}
         </h1>
-        <div class="flex gap-2">
+        <div class="flex gap-2 ml-4">
           <ShareRetro />
           <RouterLink
             class="flex self-center flex-shrink-0"
@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <p v-if="retrospective.description" class="text-gray-500">
+      <p v-if="retrospective.description" class="text-gray-500 mb-10">
         {{ retrospective.description }}
       </p>
     </div>

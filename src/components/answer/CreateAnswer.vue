@@ -11,7 +11,7 @@
   const answer = ref('');
   const disableInteraction = ref(false);
 
-  const { question, questionIndex } = defineProps<{
+  const props = defineProps<{
     question: Question;
     questionIndex: number;
   }>();
@@ -23,7 +23,7 @@
 
     disableInteraction.value = true;
 
-    const res = await answerApi.createAnswer(answer.value, question.id);
+    const res = await answerApi.createAnswer(answer.value, props.question.id);
 
     emits('fetched', { success: res.error === undefined });
 
@@ -32,7 +32,7 @@
     if (res.error)
       return notifyStore.notify('An error occured to create the question', NotificationType.Error);
 
-    retroStore.answer.createAnswer({ ...res, question_id: question.id });
+    retroStore.answer.createAnswer({ ...res, question_id: props.question.id });
   };
 </script>
 

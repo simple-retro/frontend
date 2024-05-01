@@ -13,21 +13,21 @@
   const isOpen = ref(false);
   const disableInteraction = ref(false);
 
-  const { question, questionIndex } = defineProps<{
+  const props = defineProps<{
     question: Question;
     questionIndex: number;
   }>();
 
-  const updatedText = ref(question.text);
+  const updatedText = ref(props.question.text);
 
   const updateQuestion = async () => {
-    if (updatedText.value === question.text) {
+    if (updatedText.value === props.question.text) {
       isOpen.value = false;
       return;
     }
 
     disableInteraction.value = true;
-    const res = await questionApi.editQuestion({ ...question, text: updatedText.value });
+    const res = await questionApi.editQuestion({ ...props.question, text: updatedText.value });
     disableInteraction.value = false;
 
     if (res?.error)

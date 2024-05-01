@@ -12,12 +12,12 @@
   const isOpen = ref(false);
   const disableInteraction = ref(false);
 
-  const { retrospective } = defineProps<{
+  const props = defineProps<{
     retrospective: Retrospective;
   }>();
 
-  const updatedName = ref(retrospective.name);
-  const updatedDescription = ref(retrospective.description);
+  const updatedName = ref(props.retrospective.name);
+  const updatedDescription = ref(props.retrospective.description);
 
   const toggleModal = () => {
     isOpen.value = !isOpen.value;
@@ -25,8 +25,8 @@
 
   const updateRetrospective = async () => {
     if (
-      updatedName.value === retrospective.name &&
-      updatedDescription.value === retrospective.description
+      updatedName.value === props.retrospective.name &&
+      updatedDescription.value === props.retrospective.description
     ) {
       isOpen.value = !isOpen.value;
       return;
@@ -34,7 +34,7 @@
 
     disableInteraction.value = true;
     const res = await retrospectiveApi.updateRetrospective({
-      id: retrospective.id,
+      id: props.retrospective.id,
       description: updatedDescription.value,
       name: updatedName.value,
     });

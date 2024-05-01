@@ -1,15 +1,29 @@
 <script setup lang="ts">
+  import { computed } from 'vue';
   import { useLimistStore } from '../../stores/limitsStore';
   import BaseButton from '../core/BaseButton.vue';
+  import LimitLabel from '../core/LimitLabel.vue';
 
   const limitsStore = useLimistStore();
 
-  const { retroName, retroDescription } = defineProps<{
+  const props = defineProps<{
     retroName: string;
     retroDescription: string | undefined;
     buttonLabel: string;
     disabled: boolean;
   }>();
+
+  const charactersLeftForName = computed(() => {
+    const limit = limitsStore.limits?.retrospective.name ?? 0;
+
+    return limit - props.retroName.length;
+  });
+
+  const charactersLeftForDescription = computed(() => {
+    const limit = limitsStore.limits?.retrospective.description ?? 0;
+
+    return limit - (props.retroDescription?.length ?? 0);
+  });
 
   const emit = defineEmits<{
     'update:retroName': [string];
@@ -20,9 +34,10 @@
 
 <template>
   <div class="flex flex-col gap-2">
-    <label for="name" class="text-md font-bold text-gray-900">Name</label>
+    <LimitLabel :characters-left="charactersLeftForName" label="Name" label-for="name" />
     <input
       id="name"
+      aria-describedby="left-name"
       :value="retroName"
       :disabled="disabled || !limitsStore.limits"
       :maxlength="limitsStore.limits?.retrospective.name"
@@ -32,9 +47,14 @@
       @input="emit('update:retroName', ($event.target as HTMLInputElement).value)"
     />
 
-    <label for="description" class="text-md font-bold text-gray-900">Description</label>
+    <LimitLabel
+      :characters-left="charactersLeftForDescription"
+      label="Description"
+      label-for="description"
+    />
     <textarea
       id="description"
+      aria-describedby="left-description"
       :value="retroDescription"
       :disabled="disabled || !limitsStore.limits"
       :maxlength="limitsStore.limits?.retrospective.description"

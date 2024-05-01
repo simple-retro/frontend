@@ -34,7 +34,7 @@
       <div class="flex flex-col">
         <div class="flex justify-between items-center">
           <h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-            <div class="cursor-pointer" @click="toogleEditRetroModal">
+            <div class="cursor-pointer break-all" @click="toogleEditRetroModal">
               {{ retrospective.name }}
               <EditIcon class="inline" :size="42" />
             </div>
@@ -45,7 +45,7 @@
             <DeleteRetrospective :retrospective="retrospective" />
           </div>
         </div>
-        <p v-if="retrospective.description" class="text-gray-500">
+        <p v-if="retrospective.description" class="text-gray-500 break-all">
           {{ retrospective.description }}
         </p>
         <BaseButton

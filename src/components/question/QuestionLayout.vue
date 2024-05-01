@@ -10,7 +10,7 @@
   import OpenEyeIcon from '../icons/OpenEyeIcon.vue';
   import ClosedEyeIcon from '../icons/ClosedEyeIcon.vue';
 
-  const { question, questionIndex, editable } = defineProps<{
+  defineProps<{
     question: Question;
     questionIndex: number;
     editable: boolean;
@@ -40,7 +40,8 @@
 
     <div class="flex justify-between items-center">
       <p
-        class="text-xl max-w-3xl font-bold break-word flex gap-2 cursor-pointer"
+        class="text-xl font-bold break-all flex gap-2 cursor-pointer"
+        :class="{ 'max-w-3xl': editable, 'max-w-4xl': !editable }"
         @click="toggleDisplayAnswers"
       >
         {{ `Q${questionIndex}. ${question.text}` }}

@@ -6,7 +6,7 @@
   import PageDivider from '../core/PageDivider.vue';
   import DeleteAnswer from './DeleteAnswer.vue';
 
-  const { answer } = defineProps<{
+  defineProps<{
     answer: Answer;
   }>();
 
@@ -24,7 +24,7 @@
   <div>
     <div class="flex flex-col cursor-pointer" @click="controlAnswerModal(answer)">
       <i class="absolute">•</i>
-      <div class="text-black ml-5 whitespace-pre-line">{{ answer.text }}</div>
+      <div class="text-black ml-5 whitespace-pre-line break-all">{{ answer.text }}</div>
     </div>
 
     <ModalifyComponent v-if="isControlModalOpen" @close="isControlModalOpen = false">

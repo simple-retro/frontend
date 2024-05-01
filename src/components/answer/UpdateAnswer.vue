@@ -12,21 +12,21 @@
     close: [];
   }>();
 
-  const { answer } = defineProps<{
+  const props = defineProps<{
     answer: Answer;
   }>();
 
-  const updatedText = ref(answer.text);
+  const updatedText = ref(props.answer.text);
   const disableInteraction = ref(false);
 
   const updateAnswer = async () => {
-    if (updatedText.value === answer.text) {
+    if (updatedText.value === props.answer.text) {
       emits('close');
       return;
     }
 
     disableInteraction.value = true;
-    const res = await answerApi.editAnswer({ ...answer, text: updatedText.value });
+    const res = await answerApi.editAnswer({ ...props.answer, text: updatedText.value });
     disableInteraction.value = false;
 
     if (res.error)

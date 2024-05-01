@@ -1,16 +1,24 @@
 <script setup lang="ts">
+  import { computed } from 'vue';
   import { useLimistStore } from '../../stores/limitsStore';
   import BaseButton from '../core/BaseButton.vue';
+  import LimitLabel from '../core/LimitLabel.vue';
 
   const limitsStore = useLimistStore();
 
-  const { answer } = defineProps<{
+  const props = defineProps<{
     answer: string;
     label: string;
     placeholder: string;
     buttonLabel: string;
     disabled: boolean;
   }>();
+
+  const charactersLeft = computed(() => {
+    const limit = limitsStore.limits?.answer.text ?? 0;
+
+    return limit - props.answer.length;
+  });
 
   const emit = defineEmits<{
     'update:answer': [string];
@@ -19,12 +27,11 @@
 </script>
 
 <template>
-  <label for="answer" class="block mb-2 text-md font-bold text-gray-900">
-    {{ label }}
-  </label>
+  <LimitLabel :characters-left="charactersLeft" :label="label" label-for="answer" />
 
   <textarea
     id="answer"
+    aria-describedby="left-question"
     :value="answer"
     :disabled="disabled || !limitsStore.limits"
     :maxlength="limitsStore.limits?.answer.text"
