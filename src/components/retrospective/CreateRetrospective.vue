@@ -4,26 +4,20 @@
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import { useRouter } from 'vue-router';
-  import BaseButton from '../core/BaseButton.vue';
-  import { useLimistStore } from '../../stores/limitsStore';
-  import { storeToRefs } from 'pinia';
+  import RetrospectiveInputs from './RetrospectiveInputs.vue';
 
   const notifyStore = useNotifyStore();
-  const limitsStore = useLimistStore();
   const retroStore = useRetrospectiveStore();
   const router = useRouter();
 
   const retroName = ref('');
   const retroDescription = ref('');
-  const disableIntearction = ref(false);
+  const disableInteraction = ref(false);
 
-  const { limits } = storeToRefs(limitsStore);
   const createRetrospective = async () => {
-    disableIntearction.value = true;
-
+    disableInteraction.value = true;
     const retro = await retroApi.createRetrospective(retroName.value, retroDescription.value);
-
-    disableIntearction.value = false;
+    disableInteraction.value = false;
 
     if (retro.error)
       return notifyStore.notify(
@@ -37,41 +31,13 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
-    <label for="name" class="text-md font-bold text-gray-900">Name</label>
-    <input
-      id="name"
-      v-model="retroName"
-      :disabled="disableIntearction || !limits"
-      :maxlength="limits?.retrospective.name"
-      rows="4"
-      class="flex p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
-      placeholder="When you were a child..."
-    />
-
-    <label for="description" class="text-md font-bold text-gray-900">Description</label>
-    <textarea
-      id="description"
-      v-model="retroDescription"
-      :disabled="disableIntearction || !limits"
-      :maxlength="limits?.retrospective.description"
-      rows="4"
-      class="flex mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
-      placeholder="Retrospective to talk about sprint 123, gather some feedback and be better!"
-    />
-
-    <BaseButton
-      :disabled="
-        disableIntearction ||
-        retroName.length < 5 ||
-        !limits ||
-        retroName.length > limits.retrospective.name ||
-        retroDescription.length > limits.retrospective.description
-      "
-      class="w-full"
-      @click="createRetrospective"
-    >
-      Create retrospective
-    </BaseButton>
-  </div>
+  <RetrospectiveInputs
+    button-label="Create retrospective"
+    :retro-name="retroName"
+    :disabled="disableInteraction"
+    :retro-description="retroDescription"
+    @clicked="createRetrospective"
+    @update:retro-name="($event) => (retroName = $event)"
+    @update:retro-description="($event) => (retroDescription = $event)"
+  />
 </template>

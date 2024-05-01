@@ -7,6 +7,18 @@ export const useLimistStore = defineStore('limits', () => {
   const notifyStore = useNotifyStore();
   const limits = ref<Limits>();
 
+  // FIXME: remove this line. Do not allow it in commit
+  limits.value = {
+    answer: { text: 1000 },
+    question: {
+      text: 300,
+    },
+    retrospective: {
+      description: 300,
+      name: 80,
+    },
+  };
+
   const fetchLimits = async () => {
     if (typeof limits.value !== 'undefined') return;
 

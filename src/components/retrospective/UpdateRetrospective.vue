@@ -1,20 +1,16 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import BaseButton from '../core/BaseButton.vue';
   import ModalifyComponent from '../core/ModalifyComponent.vue';
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { Retrospective, useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import retrospectiveApi from '../../services/retrospectiveApi';
-  import { useLimistStore } from '../../stores/limitsStore';
-  import { storeToRefs } from 'pinia';
+  import RetrospectiveInputs from './RetrospectiveInputs.vue';
 
   const retroStore = useRetrospectiveStore();
   const notifyStore = useNotifyStore();
-  const limitsStore = useLimistStore();
-
-  const { limits } = storeToRefs(limitsStore);
 
   const isOpen = ref(false);
+  const disableInteraction = ref(false);
 
   const { retrospective } = defineProps<{
     retrospective: Retrospective;
@@ -36,11 +32,13 @@
       return;
     }
 
+    disableInteraction.value = true;
     const res = await retrospectiveApi.updateRetrospective({
       id: retrospective.id,
       description: updatedDescription.value,
       name: updatedName.value,
     });
+    disableInteraction.value = false;
 
     if (res.error)
       return notifyStore.notify(
@@ -58,40 +56,14 @@
 
 <template>
   <ModalifyComponent v-if="isOpen" @close="toggleModal">
-    <div class="flex flex-col gap-2">
-      <label for="name" class="text-md font-bold text-gray-900">Name</label>
-      <input
-        id="name"
-        v-model="updatedName"
-        :disabled="!limits"
-        :maxlength="limits?.retrospective.name"
-        rows="4"
-        class="flex p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
-        placeholder="When you were a child..."
-      />
-
-      <label for="description" class="text-md font-bold text-gray-900">Description</label>
-      <textarea
-        id="description"
-        v-model="updatedDescription"
-        :disabled="!limits"
-        :maxlength="limits?.retrospective.description"
-        rows="4"
-        class="flex mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
-        placeholder="Retrospective to talk about sprint 123, gather some feedback and be better!"
-      />
-
-      <BaseButton
-        :disabled="
-          updatedName.length < 5 ||
-          !limits ||
-          updatedName.length > limits.retrospective.name ||
-          (updatedDescription && updatedDescription.length > limits.retrospective.description)
-        "
-        class="w-full"
-        @click="updateRetrospective"
-        >Update retrospective</BaseButton
-      >
-    </div>
+    <RetrospectiveInputs
+      button-label="Update retrospective"
+      :retro-name="updatedName"
+      :disabled="disableInteraction"
+      :retro-description="updatedDescription"
+      @clicked="updateRetrospective"
+      @update:retro-name="($event) => (updatedName = $event)"
+      @update:retro-description="($event) => (updatedDescription = $event)"
+    />
   </ModalifyComponent>
 </template>

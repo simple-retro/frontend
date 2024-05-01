@@ -3,18 +3,13 @@
   import answerApi from '../../services/answerApi';
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { Question, useRetrospectiveStore } from '../../stores/retrospectiveStore';
-  import BaseButton from '../core/BaseButton.vue';
-  import { useLimistStore } from '../../stores/limitsStore';
-  import { storeToRefs } from 'pinia';
+  import AnswerInputs from './AnswerInputs.vue';
 
   const notifyStore = useNotifyStore();
   const retroStore = useRetrospectiveStore();
-  const limitsStore = useLimistStore();
-
-  const { limits } = storeToRefs(limitsStore);
 
   const answer = ref('');
-  const disableIntearction = ref(false);
+  const disableInteraction = ref(false);
 
   const { question, questionIndex } = defineProps<{
     question: Question;
@@ -26,13 +21,13 @@
   const createAnswer = async () => {
     if (answer.value.length < 1) return;
 
-    disableIntearction.value = true;
+    disableInteraction.value = true;
 
     const res = await answerApi.createAnswer(answer.value, question.id);
 
     emits('fetched', { success: res.error === undefined });
 
-    disableIntearction.value = false;
+    disableInteraction.value = false;
 
     if (res.error)
       return notifyStore.notify('An error occured to create the question', NotificationType.Error);
@@ -42,27 +37,13 @@
 </script>
 
 <template>
-  <label for="answer" class="block mb-2 text-md font-bold text-gray-900">
-    {{ `Q${questionIndex}. Your answer` }}
-  </label>
-
-  <textarea
-    id="answer"
-    v-model="answer"
-    :disabled="disableIntearction || !limits"
-    :maxlength="limits?.answer.text"
-    rows="4"
-    class="block mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
+  <AnswerInputs
+    :label="`Q${questionIndex}. Your answer`"
+    :answer="answer"
     :placeholder="question.text"
+    button-label="Send answer"
+    :disabled="disableInteraction"
+    @clicked="createAnswer"
+    @update:answer="($event) => (answer = $event)"
   />
-
-  <BaseButton
-    :disabled="
-      disableIntearction || answer.length < 1 || !limits || answer.length > limits.answer.text
-    "
-    class="w-full"
-    @click="createAnswer"
-  >
-    Send answer
-  </BaseButton>
 </template>

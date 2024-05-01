@@ -5,16 +5,13 @@
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import questionApi from '../../services/questionApi';
   import { Question, useRetrospectiveStore } from '../../stores/retrospectiveStore';
-  import { useLimistStore } from '../../stores/limitsStore';
-  import { storeToRefs } from 'pinia';
+  import QuestionInputs from './QuestionInputs.vue';
 
   const retroStore = useRetrospectiveStore();
   const notifyStore = useNotifyStore();
-  const limitsStore = useLimistStore();
-
-  const { limits } = storeToRefs(limitsStore);
 
   const isOpen = ref(false);
+  const disableInteraction = ref(false);
 
   const { question, questionIndex } = defineProps<{
     question: Question;
@@ -29,7 +26,9 @@
       return;
     }
 
+    disableInteraction.value = true;
     const res = await questionApi.editQuestion({ ...question, text: updatedText.value });
+    disableInteraction.value = false;
 
     if (res?.error)
       return notifyStore.notify(
@@ -51,25 +50,14 @@
 
 <template>
   <ModalifyComponent v-if="isOpen" @close="isOpen = false">
-    <label for="question" class="block mb-2 text-md font-bold text-gray-900">
-      {{ `Q${questionIndex}. Update question` }}
-    </label>
-    <textarea
-      id="question"
-      v-model="updatedText"
-      :disabled="!limits"
-      :maxlength="limits?.question.text"
-      rows="4"
-      class="flex mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 disabled:opacity-75"
-      placeholder="When you were a child..."
+    <QuestionInputs
+      button-label="Update question"
+      :label="`Q${questionIndex}. Update question`"
+      :disabled="disableInteraction"
+      :question="updatedText"
+      @update:question="($event) => (updatedText = $event)"
+      @clicked="updateQuestion"
     />
-
-    <BaseButton
-      class="w-full"
-      :disabled="!limits || updatedText.length > limits.question.text"
-      @click="updateQuestion"
-      >Update question</BaseButton
-    >
   </ModalifyComponent>
 
   <BaseButton @click="openModal"><span>Update question</span></BaseButton>
