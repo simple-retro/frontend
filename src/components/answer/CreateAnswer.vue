@@ -4,9 +4,15 @@
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { Question, useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import BaseButton from '../core/BaseButton.vue';
+  import { useLimistStore } from '../../stores/limitsStore';
+  import { storeToRefs } from 'pinia';
 
   const notifyStore = useNotifyStore();
   const retroStore = useRetrospectiveStore();
+  const limitsStore = useLimistStore();
+
+  const { limits } = storeToRefs(limitsStore);
+
   const answer = ref('');
   const disableIntearction = ref(false);
 
@@ -43,14 +49,17 @@
   <textarea
     id="answer"
     v-model="answer"
-    :disabled="disableIntearction"
+    :disabled="disableIntearction || !limits"
+    :maxlength="limits?.answer.text"
     rows="4"
     class="block mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
     :placeholder="question.text"
   />
 
   <BaseButton
-    :disabled="disableIntearction || answer.length < 1"
+    :disabled="
+      disableIntearction || answer.length < 1 || !limits || answer.length > limits.answer.text
+    "
     class="w-full"
     @click="createAnswer"
   >

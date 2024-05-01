@@ -4,9 +4,14 @@
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import BaseButton from '../core/BaseButton.vue';
+  import { useLimistStore } from '../../stores/limitsStore';
+  import { storeToRefs } from 'pinia';
 
   const notifyStore = useNotifyStore();
   const retroStore = useRetrospectiveStore();
+  const limitsStore = useLimistStore();
+
+  const { limits } = storeToRefs(limitsStore);
   const question = ref('');
   const disableIntearction = ref(false);
 
@@ -35,14 +40,17 @@
   <textarea
     id="question"
     v-model="question"
-    :disabled="disableIntearction"
+    :disabled="disableIntearction || !limits"
+    :maxlength="limits?.question.text"
     rows="4"
     class="flex mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
     placeholder="When you were a child..."
   />
 
   <BaseButton
-    :disabled="disableIntearction || question.length < 5"
+    :disabled="
+      disableIntearction || question.length < 5 || !limits || question.length > limits.question.text
+    "
     class="w-full"
     @click="createQuestion"
   >

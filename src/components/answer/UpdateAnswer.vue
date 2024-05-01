@@ -4,9 +4,14 @@
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { Answer, useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import answerApi from '../../services/answerApi';
+  import { useLimistStore } from '../../stores/limitsStore';
+  import { storeToRefs } from 'pinia';
 
   const retroStore = useRetrospectiveStore();
   const notifyStore = useNotifyStore();
+  const limitsStore = useLimistStore();
+
+  const { limits } = storeToRefs(limitsStore);
 
   const emits = defineEmits<{
     close: [];
@@ -43,10 +48,17 @@
   <textarea
     id="answer"
     v-model="updatedText"
+    :maxlength="limits?.answer.text"
+    :disabled="!limits"
     rows="6"
     class="flex mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 disabled:opacity-75"
     placeholder="Eat potato..."
   />
 
-  <BaseButton class="w-full" @click="updateAnswer">Update answer</BaseButton>
+  <BaseButton
+    class="w-full"
+    :disabled="!limits || updatedText.length > limits.answer.text"
+    @click="updateAnswer"
+    >Update answer</BaseButton
+  >
 </template>

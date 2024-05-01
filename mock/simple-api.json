@@ -12,48 +12,14 @@
       "uuid": "de4b66da-06ed-4fad-b044-705339fb40c1",
       "type": "http",
       "documentation": "",
-      "method": "post",
-      "endpoint": "question",
+      "method": "get",
+      "endpoint": "limits",
       "responses": [
         {
           "uuid": "39c8ef9d-0227-4903-ae7f-34d77267785f",
-          "body": "{\n  \"id\": \"question-123\"\n}",
+          "body": "{\n  \"retrospective\": {\n  \"name\": 100,\n  \"description\": 300,\n    }\n  },\n  \"question\": {\n    \"text\": 300\n  },\n  \"answer\": {\n    \"text\": 600\n  }\n}",
           "latency": 0,
-          "statusCode": 201,
-          "label": "",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "body",
-              "modifier": "question",
-              "value": "",
-              "invert": true,
-              "operator": "null"
-            },
-            {
-              "target": "cookie",
-              "modifier": "retrospective_id",
-              "value": "retro-123",
-              "invert": false,
-              "operator": "equals"
-            }
-          ],
-          "rulesOperator": "AND",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": false,
-          "crudKey": "id",
-          "callbacks": []
-        },
-        {
-          "uuid": "13bb66ee-5827-48e9-945b-f3477716bebf",
-          "body": "{\n  \"error\": \"This retro doesnt exists\"\n}",
-          "latency": 0,
-          "statusCode": 404,
+          "statusCode": 200,
           "label": "",
           "headers": [],
           "bodyType": "INLINE",
@@ -61,7 +27,7 @@
           "databucketID": "",
           "sendFileAsBody": false,
           "rules": [],
-          "rulesOperator": "OR",
+          "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true,
@@ -97,12 +63,20 @@
       "value": "application/json"
     },
     {
-      "key": "Access-Control-Allow-Origin",
-      "value": "*"
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
     },
     {
-      "key": "Set-Cookie",
-      "value": "retrospective_id=retro-123"
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "http://localhost:5173"
+    },
+    {
+      "key": "Access-Control-Allow-Credentials",
+      "value": "true"
     }
   ],
   "proxyReqHeaders": [

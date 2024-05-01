@@ -5,8 +5,11 @@
   import { useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import { useRouter } from 'vue-router';
   import BaseButton from '../core/BaseButton.vue';
+  import { useLimistStore } from '../../stores/limitsStore';
+  import { storeToRefs } from 'pinia';
 
   const notifyStore = useNotifyStore();
+  const limitsStore = useLimistStore();
   const retroStore = useRetrospectiveStore();
   const router = useRouter();
 
@@ -14,6 +17,7 @@
   const retroDescription = ref('');
   const disableIntearction = ref(false);
 
+  const { limits } = storeToRefs(limitsStore);
   const createRetrospective = async () => {
     disableIntearction.value = true;
 
@@ -38,7 +42,8 @@
     <input
       id="name"
       v-model="retroName"
-      :disabled="disableIntearction"
+      :disabled="disableIntearction || !limits"
+      :maxlength="limits?.retrospective.name"
       rows="4"
       class="flex p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
       placeholder="When you were a child..."
@@ -48,14 +53,21 @@
     <textarea
       id="description"
       v-model="retroDescription"
-      :disabled="disableIntearction"
+      :disabled="disableIntearction || !limits"
+      :maxlength="limits?.retrospective.description"
       rows="4"
       class="flex mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
       placeholder="Retrospective to talk about sprint 123, gather some feedback and be better!"
     />
 
     <BaseButton
-      :disabled="disableIntearction || retroName.length < 5"
+      :disabled="
+        disableIntearction ||
+        retroName.length < 5 ||
+        !limits ||
+        retroName.length > limits.retrospective.name ||
+        retroDescription.length > limits.retrospective.description
+      "
       class="w-full"
       @click="createRetrospective"
     >

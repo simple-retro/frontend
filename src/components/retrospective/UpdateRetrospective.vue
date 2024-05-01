@@ -5,9 +5,14 @@
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { Retrospective, useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import retrospectiveApi from '../../services/retrospectiveApi';
+  import { useLimistStore } from '../../stores/limitsStore';
+  import { storeToRefs } from 'pinia';
 
   const retroStore = useRetrospectiveStore();
   const notifyStore = useNotifyStore();
+  const limitsStore = useLimistStore();
+
+  const { limits } = storeToRefs(limitsStore);
 
   const isOpen = ref(false);
 
@@ -58,6 +63,8 @@
       <input
         id="name"
         v-model="updatedName"
+        :disabled="!limits"
+        :maxlength="limits?.retrospective.name"
         rows="4"
         class="flex p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
         placeholder="When you were a child..."
@@ -67,12 +74,22 @@
       <textarea
         id="description"
         v-model="updatedDescription"
+        :disabled="!limits"
+        :maxlength="limits?.retrospective.description"
         rows="4"
         class="flex mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
         placeholder="Retrospective to talk about sprint 123, gather some feedback and be better!"
       />
 
-      <BaseButton :disabled="updatedName.length < 5" class="w-full" @click="updateRetrospective"
+      <BaseButton
+        :disabled="
+          updatedName.length < 5 ||
+          !limits ||
+          updatedName.length > limits.retrospective.name ||
+          (updatedDescription && updatedDescription.length > limits.retrospective.description)
+        "
+        class="w-full"
+        @click="updateRetrospective"
         >Update retrospective</BaseButton
       >
     </div>

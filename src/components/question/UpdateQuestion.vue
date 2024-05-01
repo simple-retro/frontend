@@ -5,9 +5,14 @@
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import questionApi from '../../services/questionApi';
   import { Question, useRetrospectiveStore } from '../../stores/retrospectiveStore';
+  import { useLimistStore } from '../../stores/limitsStore';
+  import { storeToRefs } from 'pinia';
 
   const retroStore = useRetrospectiveStore();
   const notifyStore = useNotifyStore();
+  const limitsStore = useLimistStore();
+
+  const { limits } = storeToRefs(limitsStore);
 
   const isOpen = ref(false);
 
@@ -52,12 +57,19 @@
     <textarea
       id="question"
       v-model="updatedText"
+      :disabled="!limits"
+      :maxlength="limits?.question.text"
       rows="4"
       class="flex mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 disabled:opacity-75"
       placeholder="When you were a child..."
     />
 
-    <BaseButton class="w-full" @click="updateQuestion">Update question</BaseButton>
+    <BaseButton
+      class="w-full"
+      :disabled="!limits || updatedText.length > limits.question.text"
+      @click="updateQuestion"
+      >Update question</BaseButton
+    >
   </ModalifyComponent>
 
   <BaseButton @click="openModal"><span>Update question</span></BaseButton>

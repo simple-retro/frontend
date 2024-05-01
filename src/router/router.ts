@@ -3,6 +3,7 @@ import { useRetrospectiveStore } from '../stores/retrospectiveStore';
 import retrospectiveApi from '../services/retrospectiveApi';
 import { useWebsocketStore } from '../stores/websocketStore';
 import logger from '../services/logger';
+import { useLimistStore } from '../stores/limitsStore';
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +58,7 @@ export const router = createRouter({
 
 router.beforeEach(async (to) => {
   const retroStore = useRetrospectiveStore();
+  const limitsStore = useLimistStore();
   const wsStore = useWebsocketStore();
   const retroId = to.params.id;
 
@@ -66,6 +68,8 @@ router.beforeEach(async (to) => {
     logger.debug('Closing current websocket');
     wsStore.close('The user left the retrospective', false);
   }
+
+  if (toName.includes('retrospective')) await limitsStore.fetchLimits();
 
   if (
     (retroStore.currentRetro === undefined && typeof retroId === 'string') ||
