@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <p v-if="retrospective.description" class="text-gray-500 mb-10">
+      <p v-if="retrospective.description" class="text-gray-500 mb-10 break-all">
         {{ retrospective.description }}
       </p>
     </div>
