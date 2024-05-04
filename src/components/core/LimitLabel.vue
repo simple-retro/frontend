@@ -1,5 +1,19 @@
 <script setup lang="ts">
-  defineProps<{ charactersLeft: number; labelFor: string; label: string }>();
+  import { ref, watch } from 'vue';
+
+  const shouldBounce = ref(false);
+  let clearBounceTimeout: number;
+
+  const props = defineProps<{ charactersLeft: number; labelFor: string; label: string }>();
+
+  watch(props, () => {
+    clearTimeout(clearBounceTimeout);
+    shouldBounce.value = true;
+
+    clearBounceTimeout = setTimeout(() => {
+      shouldBounce.value = false;
+    }, 190);
+  });
 </script>
 
 <template>
@@ -9,7 +23,12 @@
       <span
         v-if="charactersLeft <= 30"
         :id="`left-${labelFor}`"
-        class="text-red-600 font-semibold"
+        :class="{
+          'font-semibold': true,
+          bounce: shouldBounce,
+          'text-red-500': charactersLeft <= 10,
+          'text-gray-400': charactersLeft > 10,
+        }"
         aria-live="polite"
         aria-atomic="true"
       >
@@ -18,3 +37,25 @@
     </Transition>
   </div>
 </template>
+
+<style scoped>
+  @keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .bounce {
+    animation: bounce 0.2s infinite;
+  }
+</style>
