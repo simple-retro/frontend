@@ -7,6 +7,7 @@
   const props = defineProps<{ charactersLeft: number; labelFor: string; label: string }>();
 
   watch(props, () => {
+    if (props.charactersLeft > 10) return;
     clearTimeout(clearBounceTimeout);
     shouldBounce.value = true;
 
