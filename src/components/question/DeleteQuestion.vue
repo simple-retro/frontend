@@ -11,18 +11,18 @@
 
   const isOpen = ref(false);
 
-  const { question, questionIndex } = defineProps<{
+  const props = defineProps<{
     question: Question;
     questionIndex: number;
   }>();
 
   const deleteQuestion = async () => {
-    const res = await questionApi.deleteQuestion(question.id);
+    const res = await questionApi.deleteQuestion(props.question.id);
 
     if (res?.error)
       return notifyStore.notify('An error occured to delete the question', NotificationType.Error);
 
-    retroStore.question.deleteQuestion(question);
+    retroStore.question.deleteQuestion(props.question);
 
     isOpen.value = !isOpen.value;
   };

@@ -1,22 +1,23 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import BaseButton from '../core/BaseButton.vue';
   import ModalifyComponent from '../core/ModalifyComponent.vue';
   import { NotificationType, useNotifyStore } from '../../stores/notifyStore';
   import { Retrospective, useRetrospectiveStore } from '../../stores/retrospectiveStore';
   import retrospectiveApi from '../../services/retrospectiveApi';
+  import RetrospectiveInputs from './RetrospectiveInputs.vue';
 
   const retroStore = useRetrospectiveStore();
   const notifyStore = useNotifyStore();
 
   const isOpen = ref(false);
+  const disableInteraction = ref(false);
 
-  const { retrospective } = defineProps<{
+  const props = defineProps<{
     retrospective: Retrospective;
   }>();
 
-  const updatedName = ref(retrospective.name);
-  const updatedDescription = ref(retrospective.description);
+  const updatedName = ref(props.retrospective.name);
+  const updatedDescription = ref(props.retrospective.description);
 
   const toggleModal = () => {
     isOpen.value = !isOpen.value;
@@ -24,18 +25,20 @@
 
   const updateRetrospective = async () => {
     if (
-      updatedName.value === retrospective.name &&
-      updatedDescription.value === retrospective.description
+      updatedName.value === props.retrospective.name &&
+      updatedDescription.value === props.retrospective.description
     ) {
       isOpen.value = !isOpen.value;
       return;
     }
 
+    disableInteraction.value = true;
     const res = await retrospectiveApi.updateRetrospective({
-      id: retrospective.id,
+      id: props.retrospective.id,
       description: updatedDescription.value,
       name: updatedName.value,
     });
+    disableInteraction.value = false;
 
     if (res.error)
       return notifyStore.notify(
@@ -53,28 +56,14 @@
 
 <template>
   <ModalifyComponent v-if="isOpen" @close="toggleModal">
-    <div class="flex flex-col gap-2">
-      <label for="name" class="text-md font-bold text-gray-900">Name</label>
-      <input
-        id="name"
-        v-model="updatedName"
-        rows="4"
-        class="flex p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
-        placeholder="When you were a child..."
-      />
-
-      <label for="description" class="text-md font-bold text-gray-900">Description</label>
-      <textarea
-        id="description"
-        v-model="updatedDescription"
-        rows="4"
-        class="flex mb-5 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-75"
-        placeholder="Retrospective to talk about sprint 123, gather some feedback and be better!"
-      />
-
-      <BaseButton :disabled="updatedName.length < 5" class="w-full" @click="updateRetrospective"
-        >Update retrospective</BaseButton
-      >
-    </div>
+    <RetrospectiveInputs
+      button-label="Update retrospective"
+      :retro-name="updatedName"
+      :disabled="disableInteraction"
+      :retro-description="updatedDescription"
+      @clicked="updateRetrospective"
+      @update:retro-name="($event) => (updatedName = $event)"
+      @update:retro-description="($event) => (updatedDescription = $event)"
+    />
   </ModalifyComponent>
 </template>

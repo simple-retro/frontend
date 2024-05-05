@@ -12,24 +12,24 @@
     close: [];
   }>();
 
-  const { answer } = defineProps<{
+  const props = defineProps<{
     answer: Answer;
   }>();
 
   const confirmedId = ref('');
 
   const deleteAnswer = async () => {
-    if (confirmedId.value !== answer.id) {
-      confirmedId.value = answer.id;
+    if (confirmedId.value !== props.answer.id) {
+      confirmedId.value = props.answer.id;
       return;
     }
 
-    const res = await answerApi.deleteAnswer(answer.id);
+    const res = await answerApi.deleteAnswer(props.answer.id);
 
     if (res?.error)
       return notifyStore.notify('An error occured to delete the answer', NotificationType.Error);
 
-    retroStore.answer.deleteAnswer(answer);
+    retroStore.answer.deleteAnswer(props.answer);
 
     emits('close');
   };

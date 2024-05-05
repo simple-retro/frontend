@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  const { extraClasses } = defineProps<{ extraClasses?: string }>();
+  defineProps<{ extraClasses?: string }>();
 </script>
 <template>
   <svg

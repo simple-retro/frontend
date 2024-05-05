@@ -3,7 +3,7 @@
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
-  const { retros } = defineProps<{ retros: KnownRetro[] }>();
+  defineProps<{ retros: KnownRetro[] }>();
 
   const redirectToRetro = (retroId: string) => {
     router.push({ name: 'retrospective.view', params: { id: retroId } });

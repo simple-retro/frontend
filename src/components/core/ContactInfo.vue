@@ -3,7 +3,7 @@
   import LinkedinIcon from '../icons/LinkedinIcon.vue';
   import WebsiteIcon from '../icons/WebsiteIcon.vue';
 
-  const { name, role, avatar, githubUser, linkedinUser, websiteLink } = defineProps<{
+  defineProps<{
     name: string;
     role: string;
     avatar: string;

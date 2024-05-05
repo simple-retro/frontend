@@ -7,6 +7,7 @@ export enum Endpoints {
   Retrospective = '/retrospective',
   Answer = '/answer',
   SocketHello = '/hello',
+  Limits = '/limits',
 }
 
 export const apiRequest = axios.create({

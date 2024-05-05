@@ -10,14 +10,14 @@
   import OpenEyeIcon from '../icons/OpenEyeIcon.vue';
   import ClosedEyeIcon from '../icons/ClosedEyeIcon.vue';
 
-  const { question, questionIndex, editable } = defineProps<{
+  defineProps<{
     question: Question;
     questionIndex: number;
     editable: boolean;
   }>();
 
   const isCreateModalOpen = ref(false);
-  const answersAreShown = ref(false);
+  const answersAreShown = ref(true);
 
   const toggleCreateAnswerModal = () => {
     isCreateModalOpen.value = !isCreateModalOpen.value;
@@ -40,12 +40,13 @@
 
     <div class="flex justify-between items-center">
       <p
-        class="text-xl max-w-3xl font-bold break-word flex gap-2 cursor-pointer"
+        class="text-xl font-bold break-all flex gap-2 cursor-pointer"
+        :class="{ 'max-w-3xl': editable, 'max-w-4xl': !editable }"
         @click="toggleDisplayAnswers"
       >
         {{ `Q${questionIndex}. ${question.text}` }}
-        <OpenEyeIcon v-if="answersAreShown" :size="24" />
-        <ClosedEyeIcon v-else :size="24" />
+        <OpenEyeIcon v-if="answersAreShown" class="flex flex-shrink-0" :size="24" />
+        <ClosedEyeIcon v-else class="flex flex-shrink-0" :size="24" />
       </p>
 
       <div class="flex gap-2 flex-shrink-0">

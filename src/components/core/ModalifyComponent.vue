@@ -7,7 +7,7 @@
     emit('close');
   };
 
-  const { extraClasses } = defineProps<{ extraClasses?: string }>();
+  defineProps<{ extraClasses?: string }>();
 </script>
 
 <template>
