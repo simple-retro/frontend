@@ -96,6 +96,7 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
 
     currentRetro.value.name = retro.name;
     currentRetro.value.description = retro.description;
+    currentRetro.value.questions = retro.questions;
   };
 
   const createRetrospective = (retro: Retrospective) => {
