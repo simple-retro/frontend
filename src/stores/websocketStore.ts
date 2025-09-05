@@ -38,9 +38,7 @@ export const useWebsocketStore = defineStore('websocket', () => {
   };
 
   const reconnectLogic = () => {
-    if (reconnectRetries >= 3) return destroy('The Websocket connection could not be restablished');
-
-    isReconnecting.value = true;
+    if (reconnectRetries >= 5) return destroy('The Websocket connection was lost');
 
     reconnectTimeout = setTimeout(
       () => {
@@ -122,7 +120,6 @@ export const useWebsocketStore = defineStore('websocket', () => {
     if (!retro.error) retroStore.retrospective.updateRetrospective(retro);
 
     startHeartBeat();
-    notifyStore.notify(`Websocket connected`, NotificationType.Success);
   };
 
   const onError = (e: unknown) => {
@@ -132,7 +129,6 @@ export const useWebsocketStore = defineStore('websocket', () => {
   const onClose = () => {
     logger.debug('The websocket connection has been closed!');
     clearTimers();
-    notifyStore.notify(`The websocket connection has been closed`, NotificationType.Warning);
     reconnectLogic();
   };
 

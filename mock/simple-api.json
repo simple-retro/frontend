@@ -36,12 +36,64 @@
         }
       ],
       "responseMode": null
+    },
+    {
+      "uuid": "55594390-8125-48a0-8bb8-bdc2f0883bc7",
+      "type": "crud",
+      "documentation": "",
+      "method": "",
+      "endpoint": "retrospective",
+      "responses": [
+        {
+          "uuid": "1d4ed734-e634-49dd-b7bf-f7b0533aa774",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "sadasd",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id231",
+          "callbacks": []
+        },
+        {
+          "uuid": "d8c518e4-4883-44ea-abe1-19cdb58e1ac5",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
     }
   ],
   "rootChildren": [
     {
       "type": "route",
       "uuid": "de4b66da-06ed-4fad-b044-705339fb40c1"
+    },
+    {
+      "type": "route",
+      "uuid": "55594390-8125-48a0-8bb8-bdc2f0883bc7"
     }
   ],
   "proxyMode": false,
