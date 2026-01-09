@@ -7,7 +7,14 @@ import retrospectiveApi from '../services/retrospectiveApi';
 import { Question, useRetrospectiveStore } from './retrospectiveStore';
 import logger from '../services/logger';
 
-type SocketActions = 'create' | 'update' | 'delete';
+enum SocketActions {
+  create = 'create',
+  update = 'update',
+  delete = 'delete',
+  addVote = 'add_vote',
+  removeVote = 'remove_vote',
+}
+
 type SocketEntity = 'question' | 'retrospective' | 'answer' | 'pong';
 
 type SocketMessage = {
@@ -91,6 +98,10 @@ export const useWebsocketStore = defineStore('websocket', () => {
     if (data.type === 'pong') return ackPong();
 
     logger.debug(`Websocket message received: ${message.data}`);
+
+    // add_vote and remove_vote are just updates
+    if ([SocketActions.addVote, SocketActions.removeVote].includes(data.action))
+      data.action = SocketActions.update;
 
     const functionName = `${data.action}${capitalize(data.type)}` as const;
 

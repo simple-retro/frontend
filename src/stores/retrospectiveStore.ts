@@ -7,7 +7,13 @@ export type Answer = {
   text: string;
   position: number;
   question_id: string;
+  votes: number;
 };
+
+export enum VoteAction {
+  ADD_VOTE = 'ADD_VOTE',
+  REMOVE_VOTE = 'REMOVE_VOTE',
+}
 
 export type Question = {
   id: string;
@@ -163,6 +169,7 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
 
     answer.text = toUpdate.text;
     answer.position = toUpdate.position;
+    answer.votes = toUpdate.votes;
   };
 
   const deleteAnswer = (answer: ID<Partial<Answer>, true>) => {
@@ -189,7 +196,11 @@ export const useRetrospectiveStore = defineStore('retrospective', () => {
     createRetrospective,
   };
 
-  const answer = { createAnswer, updateAnswer, deleteAnswer };
+  const answer = {
+    createAnswer,
+    updateAnswer,
+    deleteAnswer,
+  };
 
   return {
     currentRetro,

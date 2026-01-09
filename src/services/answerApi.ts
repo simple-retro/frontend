@@ -1,5 +1,6 @@
 import { Endpoints, MayBeError, apiRequest } from './index';
-import { Answer, ID } from '../stores/retrospectiveStore';
+import { Answer, ID, VoteAction } from '../stores/retrospectiveStore';
+import { AxiosError, HttpStatusCode } from 'axios';
 
 const createAnswer = async (answer: string, questionId: string): Promise<MayBeError<Answer>> => {
   const res = await apiRequest
@@ -30,4 +31,22 @@ const editAnswer = async (
   return res.data;
 };
 
-export default { createAnswer, editAnswer, deleteAnswer };
+type ConflicVote = { conflict: boolean };
+
+const voteInAnswer = async (
+  answerId: string,
+  action: VoteAction,
+): Promise<MayBeError<ConflicVote>> => {
+  const res = await apiRequest
+    .post(Endpoints.VoteAnswer, {
+      action,
+      answer_id: answerId,
+    })
+    .catch((e: AxiosError) => e?.response?.status === HttpStatusCode.Conflict);
+
+  if (!res) return { error: true };
+
+  return { conflict: res === true };
+};
+
+export default { createAnswer, editAnswer, deleteAnswer, voteInAnswer };

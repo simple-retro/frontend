@@ -40,7 +40,7 @@
 
     <div class="flex justify-between items-center">
       <p
-        class="text-xl font-bold break-all flex gap-2 cursor-pointer"
+        class="text-xl font-bold break-all flex gap-2 cursor-pointer items-center"
         :class="{ 'max-w-3xl': editable, 'max-w-4xl': !editable }"
         @click="toggleDisplayAnswers"
       >
@@ -58,7 +58,10 @@
       </div>
     </div>
 
-    <div v-if="answersAreShown" class="overflow-hidden transition-max-height ease-out duration-300">
+    <div
+      v-if="answersAreShown"
+      class="mx-auto space-y-4 p-6 overflow-hidden transition-max-height ease-out duration-300"
+    >
       <template v-if="question.answers.length > 0">
         <TransitionGroup name="fade">
           <AnswerLayout v-for="answer in question.answers" :key="answer.id" :answer="answer" />
