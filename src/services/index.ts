@@ -6,6 +6,7 @@ export enum Endpoints {
   Question = '/question',
   Retrospective = '/retrospective',
   Answer = '/answer',
+  VoteAnswer = '/answer/vote',
   SocketHello = '/hello',
   Limits = '/limits',
 }
