@@ -25,7 +25,7 @@
 <template>
   <ShortcutModal ref="jumpToRetro" />
 
-  <div class="min-h-screen">
+  <div>
     <div class="text-center">
       <img src="/logo_nobg.png" class="h-40 inline" />
       <h1 class="mt-4 text-4xl font-bold">Simple Retro</h1>
