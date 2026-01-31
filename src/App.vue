@@ -24,8 +24,10 @@
   <div>
     <ShortcutModal ref="shortcutRef" />
     <NotifyToast class="fixed bottom-0 left-0 z-50 p-4" />
-    <div class="container grid mx-auto px-4 pt-8 md:pt-12 md:px-6 min-h-screen">
-      <RouterView />
+    <div class="container flex flex-col mx-auto px-4 pt-8 md:pt-12 md:px-6 min-h-screen">
+      <div class="grow">
+        <RouterView />
+      </div>
       <FooterComponent />
     </div>
   </div>
