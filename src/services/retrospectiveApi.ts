@@ -1,4 +1,4 @@
-import { Endpoints, MayBeError, apiRequest } from './index';
+import { Endpoints, ExportType, MayBeError, apiRequest } from './index';
 import { ID, Retrospective } from '../stores/retrospectiveStore';
 
 const createRetrospective = async (
@@ -43,4 +43,30 @@ const updateRetrospective = async (
   return result.data;
 };
 
-export default { createRetrospective, getRetrospective, deleteRestrospective, updateRetrospective };
+const exportRetrospective = async (
+  retrospectiveId: string,
+  exportType: ExportType,
+): Promise<MayBeError<Blob>> => {
+  const result = await apiRequest
+    .post(
+      Endpoints.RetrospectiveExport,
+      {
+        retrospective_id: retrospectiveId,
+        export_type: exportType,
+      },
+      { responseType: 'blob' },
+    )
+    .catch(() => null);
+
+  if (!result) return { error: true };
+
+  return result.data;
+};
+
+export default {
+  createRetrospective,
+  getRetrospective,
+  deleteRestrospective,
+  updateRetrospective,
+  exportRetrospective,
+};

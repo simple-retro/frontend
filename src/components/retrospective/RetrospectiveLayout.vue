@@ -4,6 +4,7 @@
   import ModalifyComponent from '../core/ModalifyComponent.vue';
   import QuestionLayout from '../question/QuestionLayout.vue';
   import ShareRetro from '../core/ShareRetroButton.vue';
+  import ExportRetro from '../core/ExportRetroButton.vue';
   import CreateQuestion from '../question/CreateQuestion.vue';
   import { storeToRefs } from 'pinia';
   import { RouterLink } from 'vue-router';
@@ -28,6 +29,7 @@
         </h1>
         <div class="flex gap-2 ml-4">
           <ShareRetro />
+          <ExportRetro />
           <RouterLink
             class="flex self-center flex-shrink-0"
             :to="{ name: 'retrospective.edit', params: { id: retrospective.id } }"
